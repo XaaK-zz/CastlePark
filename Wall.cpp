@@ -87,27 +87,49 @@ bool Wall::Initialize(void) {
 	glVertex3f(0.5f, 0.5f, 0.0f);
 
 	glNormal3f(1.0f, 0.0f, 0.0f);
+	glTexCoord2f(this->scaleX, this->scaleY);
 	glVertex3f(0.5f, 0.5f, 0.0f);
+	glTexCoord2f(0.0, this->scaleY);
 	glVertex3f(0.5f, 0.5f, 1.0f);
+	glTexCoord2f(0.0, 0.0);
 	glVertex3f(0.5f, -0.5f, 1.0f);
+	glTexCoord2f(this->scaleX, 0.0);
 	glVertex3f(0.5f, -0.5f, 0.0f);
 
+	glMatrixMode(GL_TEXTURE);
+    glPushMatrix();
+    glRotatef(90.0f, 0, 0, 1); /* rotate the texture_space _with_ the quad */
+
+	//Inside Facing wall
 	glNormal3f(-1.0f, 0.0f, 0.0f);
+	glTexCoord2f(this->scaleX, this->scaleY);
 	glVertex3f(-0.5f, 0.5f, 1.0f);
+	glTexCoord2f(0.0, this->scaleY);
 	glVertex3f(-0.5f, 0.5f, 0.0f);
+	glTexCoord2f(0.0, 0.0);
 	glVertex3f(-0.5f, -0.5f, 0.0f);
+	glTexCoord2f(this->scaleX, 0.0);
 	glVertex3f(-0.5f, -0.5f, 1.0f);
+glPopMatrix();
 
 	glNormal3f(0.0f, 1.0f, 0.0f);
+	//glTexCoord2f(this->scaleX, this->scaleY);
 	glVertex3f(0.5f, 0.5f, 1.0f);
+	//glTexCoord2f(0.0, this->scaleY);
 	glVertex3f(0.5f, 0.5f, 0.0f);
+	//glTexCoord2f(0.0, 0.0);
 	glVertex3f(-0.5f, 0.5f, 0.0f);
+	//glTexCoord2f(this->scaleX, 0.0);
 	glVertex3f(-0.5f, 0.5f, 1.0f);
 
 	glNormal3f(0.0f, -1.0f, 0.0f);
+	//glTexCoord2f(this->scaleX, this->scaleY);
 	glVertex3f(0.5f, -0.5f, 0.0f);
+	//glTexCoord2f(0.0, this->scaleY);
 	glVertex3f(0.5f, -0.5f, 1.0f);
+	//glTexCoord2f(0.0, 0.0);
 	glVertex3f(-0.5f, -0.5f, 1.0f);
+	//glTexCoord2f(this->scaleX, 0.0);
 	glVertex3f(-0.5f, -0.5f, 0.0f);
     glEnd();
 	
