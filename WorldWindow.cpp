@@ -27,7 +27,20 @@ WorldWindow::WorldWindow(int x, int y, int width, int height, char *label)
     x_at = 0.0f;
     y_at = 0.0f;
 
+	worldObjects = new vector<WorldObject*>();
 }
+
+// Destructor
+WorldWindow::~WorldWindow(void)
+{
+	for(std::vector<WorldObject*>::iterator it = this->worldObjects->begin(); it != this->worldObjects->end(); ++it) {
+		delete (*it);
+	}
+	this->worldObjects->clear();
+	delete worldObjects;
+}
+
+
 
 
 void
@@ -38,56 +51,69 @@ WorldWindow::draw(void)
 
     if ( ! valid() )
     {
-	// Stuff in here doesn't change from frame to frame, and does not
-	// rely on any coordinate system. It only has to be done if the
-	// GL context is damaged.
+		// Stuff in here doesn't change from frame to frame, and does not
+		// rely on any coordinate system. It only has to be done if the
+		// GL context is damaged.
 
-	double	fov_y;
+		double	fov_y;
 
-	// Sets the clear color to sky blue.
-	glClearColor(0.53f, 0.81f, 0.92f, 1.0);
+		// Sets the clear color to sky blue.
+		glClearColor(0.53f, 0.81f, 0.92f, 1.0);
 
-	// Turn on depth testing
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
+		// Turn on depth testing
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
 
-	// Turn on back face culling. Faces with normals away from the viewer
-	// will not be drawn.
-	glEnable(GL_CULL_FACE);
+		// Turn on back face culling. Faces with normals away from the viewer
+		// will not be drawn.
+		glEnable(GL_CULL_FACE);
 
-	// Enable lighting with one light.
-	glEnable(GL_LIGHT0);
-	glEnable(GL_LIGHTING);
+		// Enable lighting with one light.
+		glEnable(GL_LIGHT0);
+		glEnable(GL_LIGHTING);
 
-	// Ambient and diffuse lighting track the current color.
-	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-	glEnable(GL_COLOR_MATERIAL);
+		// Ambient and diffuse lighting track the current color.
+		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+		glEnable(GL_COLOR_MATERIAL);
 
-	// Turn on normal vector normalization. You don't have to give unit
-	// normal vector, and you can scale objects.
-	glEnable(GL_NORMALIZE);
+		// Turn on normal vector normalization. You don't have to give unit
+		// normal vector, and you can scale objects.
+		glEnable(GL_NORMALIZE);
 
-	// Set up the viewport.
-	glViewport(0, 0, w(), h());
+		// Set up the viewport.
+		glViewport(0, 0, w(), h());
 
-	// Set up the persepctive transformation.
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	fov_y = 360.0f / M_PI * atan(h() * tan(FOV_X * M_PI / 360.0) / w());
-	gluPerspective(fov_y, w() / (float)h(), 1.0, 1000.0);
+		// Set up the persepctive transformation.
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		fov_y = 360.0f / M_PI * atan(h() * tan(FOV_X * M_PI / 360.0) / w());
+		gluPerspective(fov_y, w() / (float)h(), 1.0, 1000.0);
 
-	// Do some light stuff. Diffuse color, and zero specular color
-	// turns off specular lighting.
-	color[0] = 1.0f; color[1] = 1.0f; color[2] = 1.0f; color[3] = 1.0f;
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, color);
-	color[0] = 0.0f; color[1] = 0.0f; color[2] = 0.0f; color[3] = 1.0f;
-	glLightfv(GL_LIGHT0, GL_SPECULAR, color);
+		// Do some light stuff. Diffuse color, and zero specular color
+		// turns off specular lighting.
+		color[0] = 1.0f; color[1] = 1.0f; color[2] = 1.0f; color[3] = 1.0f;
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, color);
+		color[0] = 0.0f; color[1] = 0.0f; color[2] = 0.0f; color[3] = 1.0f;
+		glLightfv(GL_LIGHT0, GL_SPECULAR, color);
 
-	// Initialize all the objects.
-	ground.Initialize();
-	traintrack.Initialize();
-	wall = new Wall(50.0f,0.0f,0.0f,3.0f,100.0f,6.0f);
-	wall->Initialize();
+		// Initialize all the objects.
+		ground.Initialize();
+		traintrack.Initialize();
+		Wall *wall = new Wall(50.0f,0.0f,0.0f,3.0f,100.0f,6.0f);
+		wall->Initialize();
+		worldObjects->push_back(wall);
+
+		wall = new Wall(-50.0f,0.0f,0.0f,3.0f,100.0f,6.0f);
+		wall->Initialize();
+		worldObjects->push_back(wall);
+
+		wall = new Wall(0.0f,50.0f,0.0f,100.0f,3.0f,6.0f);
+		wall->Initialize();
+		worldObjects->push_back(wall);
+
+		wall = new Wall(0.0f,-50.0f,0.0f,100.0f,3.0f,6.0f);
+		wall->Initialize();
+		worldObjects->push_back(wall);
 
     }
 
@@ -116,7 +142,11 @@ WorldWindow::draw(void)
     // Draw stuff. Everything.
     ground.Draw();
     traintrack.Draw();
-	wall->Draw();
+
+	for(std::vector<WorldObject*>::iterator it = this->worldObjects->begin(); it != this->worldObjects->end(); ++it) {
+		(*it)->Draw();
+	}
+	
 }
 
 

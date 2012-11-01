@@ -17,12 +17,17 @@
 #include "Track.h"
 #include "Wall.h"
 
+#include <vector>
+
+using namespace std;
+
 
 // Subclass the Fl_Gl_Window because we want to draw OpenGL in here.
 class WorldWindow : public Fl_Gl_Window {
     public:
 	// Constructor takes window position and dimensions, the title.
 	WorldWindow(int x, int y, int w, int h, char *label);
+	~WorldWindow();
 
 	// draw() method invoked whenever the view changes or the window
 	// otherwise needs to be redrawn.
@@ -39,6 +44,7 @@ class WorldWindow : public Fl_Gl_Window {
 	Ground	    ground;	    // The ground object.
 	Track  traintrack;	    // The train and track.
 	Wall	*wall;
+	vector<WorldObject*> *worldObjects;
 
 	static const double FOV_X; // The horizontal field of view.
 
@@ -63,6 +69,7 @@ class WorldWindow : public Fl_Gl_Window {
 
 	void	Drag(float);	// The function to call for mouse drag events
 };
+
 
 
 #endif
