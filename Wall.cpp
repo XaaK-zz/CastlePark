@@ -63,102 +63,245 @@ bool Wall::Initialize(void) {
 	glBindTexture(GL_TEXTURE_2D, this->texture_obj);
 
     glColor3f(0.0, 0.0, 1.0);
+	glMatrixMode(GL_MODELVIEW);
 	glTranslatef (this->posX, this->posY, this->posZ); /*  move position  */
 	glScalef(this->scaleX,this->scaleY,this->scaleZ);
 
+	glPushAttrib(GL_TRANSFORM_BIT);
+	glMatrixMode(GL_TEXTURE);
+	glLoadIdentity();
+	glTranslatef(0.5, 0.5, 0);
+	glRotatef(90.0f, 0, 0, 1);
+	glTranslatef(-0.5, -0.5, 0);
+	glPopAttrib();
+
     glBegin(GL_QUADS);
 	glNormal3f(0.0f, 0.0f, 1.0f);
-	glTexCoord2f(this->scaleX, this->scaleY);
+	glTexCoord2f(this->scaleX/2.0f, this->scaleY/2.0f);
 	glVertex3f(0.5f, 0.5f, 1.0f);
-	glTexCoord2f(0.0, this->scaleY);
+	glTexCoord2f(0.0, this->scaleY/2.0f);
 	glVertex3f(-0.5f, 0.5f, 1.0f);
 	glTexCoord2f(0.0, 0.0);
 	glVertex3f(-0.5f, -0.5f, 1.0f);
-	glTexCoord2f(this->scaleX, 0.0);
+	glTexCoord2f(this->scaleX/2.0f, 0.0);
 	glVertex3f(0.5f, -0.5f, 1.0f);
-
+	glEnd();
+	
+	glBegin(GL_QUADS);
 	glNormal3f(0.0f, 0.0f, -1.0f);
-	glTexCoord2f(this->scaleX, this->scaleY);
+	glTexCoord2f(this->scaleX/2.0f, this->scaleY/2.0f);
 	glVertex3f(0.5f, -0.5f, 0.0f);
-	glTexCoord2f(0.0, this->scaleY);
+	glTexCoord2f(0.0, this->scaleY/2.0f);
 	glVertex3f(-0.5f, -0.5f, 0.0f);
 	glTexCoord2f(0.0, 0.0);
 	glVertex3f(-0.5f, 0.5f, 0.0f);
-	glTexCoord2f(this->scaleX, 0.0);
+	glTexCoord2f(this->scaleX/2.0f, 0.0);
 	glVertex3f(0.5f, 0.5f, 0.0f);
+	glEnd();
 
+	glPushAttrib(GL_TRANSFORM_BIT);
+	glMatrixMode(GL_TEXTURE);
+	glLoadIdentity();
+	glTranslatef(0.5, 0.5, 0);
+	glRotatef(-90.0f, 0, 0, 1);
+	glTranslatef(-0.5, -0.5, 0);
+	glPopAttrib();
+
+	glBegin(GL_QUADS);
 	glNormal3f(1.0f, 0.0f, 0.0f);
-	glTexCoord2f(this->scaleX, this->scaleY);
+	glTexCoord2f(this->scaleZ/2.0f, this->scaleY/2.0f);
 	glVertex3f(0.5f, 0.5f, 0.0f);
-	glTexCoord2f(0.0, this->scaleY);
+	glTexCoord2f(0.0, this->scaleY/2.0f);
 	glVertex3f(0.5f, 0.5f, 1.0f);
 	glTexCoord2f(0.0, 0.0);
 	glVertex3f(0.5f, -0.5f, 1.0f);
-	glTexCoord2f(this->scaleX, 0.0);
+	glTexCoord2f(this->scaleZ/2.0f, 0.0);
 	glVertex3f(0.5f, -0.5f, 0.0f);
+	glEnd();
 
-	//glMatrixMode(GL_TEXTURE);
-    //glPushMatrix();
-    //glRotatef(0, 0, 90.0f, 1); /* rotate the texture_space _with_ the quad */
+	glPushAttrib(GL_TRANSFORM_BIT);
+	glMatrixMode(GL_TEXTURE);
+	glLoadIdentity();
+	glTranslatef(0.5, 0.5, 0);
+	glRotatef(90.0f, 0, 0, 1);
+	glTranslatef(-0.5, -0.5, 0);
+	glPopAttrib();
 
 	//Inside Facing wall
-	/*
+	glBegin(GL_QUADS);
 	glNormal3f(-1.0f, 0.0f, 0.0f);
-	glTexCoord2f(this->scaleX, this->scaleY);
+	glTexCoord2f(this->scaleZ/2.0f, this->scaleY/2.0f);
 	glVertex3f(-0.5f, 0.5f, 1.0f);
-	glTexCoord2f(0.0, this->scaleY);
+	glTexCoord2f(0.0, this->scaleY/2.0f);
 	glVertex3f(-0.5f, 0.5f, 0.0f);
 	glTexCoord2f(0.0, 0.0);
 	glVertex3f(-0.5f, -0.5f, 0.0f);
-	glTexCoord2f(this->scaleX, 0.0);
+	glTexCoord2f(this->scaleZ/2.0f, 0.0);
 	glVertex3f(-0.5f, -0.5f, 1.0f);
-	*/
-//glPopMatrix();
+	glEnd();
+	
+	glPushAttrib(GL_TRANSFORM_BIT);
+	glMatrixMode(GL_TEXTURE);
+	glLoadIdentity();
+	glTranslatef(0.5, 0.5, 0);
+	glRotatef(90.0f, 0, 0, 1);
+	glTranslatef(-0.5, -0.5, 0);
+	glPopAttrib();
 
+	glBegin(GL_QUADS);
 	glNormal3f(0.0f, 1.0f, 0.0f);
-	//glTexCoord2f(this->scaleX, this->scaleY);
+	glTexCoord2f(this->scaleZ/2.0f, this->scaleX/2.0f);
 	glVertex3f(0.5f, 0.5f, 1.0f);
-	//glTexCoord2f(0.0, this->scaleY);
+	glTexCoord2f(0.0, this->scaleX/2.0f);
 	glVertex3f(0.5f, 0.5f, 0.0f);
-	//glTexCoord2f(0.0, 0.0);
+	glTexCoord2f(0.0, 0.0);
 	glVertex3f(-0.5f, 0.5f, 0.0f);
-	//glTexCoord2f(this->scaleX, 0.0);
+	glTexCoord2f(this->scaleZ/2.0f, 0.0);
 	glVertex3f(-0.5f, 0.5f, 1.0f);
-
+	glEnd();
+	
+	glPushAttrib(GL_TRANSFORM_BIT);
+	glMatrixMode(GL_TEXTURE);
+	glLoadIdentity();
+	glTranslatef(0.5, 0.5, 0);
+	glRotatef(-90.0f, 0, 0, 1);
+	glTranslatef(-0.5, -0.5, 0);
+	glPopAttrib();
+	
+	glBegin(GL_QUADS);
 	glNormal3f(0.0f, -1.0f, 0.0f);
-	//glTexCoord2f(this->scaleX, this->scaleY);
+	glTexCoord2f(this->scaleZ/2.0f, this->scaleX/2.0f);
 	glVertex3f(0.5f, -0.5f, 0.0f);
-	//glTexCoord2f(0.0, this->scaleY);
+	glTexCoord2f(0.0, this->scaleX/2.0f);
 	glVertex3f(0.5f, -0.5f, 1.0f);
-	//glTexCoord2f(0.0, 0.0);
+	glTexCoord2f(0.0, 0.0);
 	glVertex3f(-0.5f, -0.5f, 1.0f);
-	//glTexCoord2f(this->scaleX, 0.0);
+	glTexCoord2f(this->scaleZ/2.0f, 0.0);
 	glVertex3f(-0.5f, -0.5f, 0.0f);
     glEnd();
 	
-	if(this->scaleX < this->scaleY) {
-		glPushAttrib(GL_TRANSFORM_BIT);
-		glMatrixMode(GL_TEXTURE);
-		glLoadIdentity();
-		glTranslatef(0.5, 0.5, 0);
-		glRotatef(90.0f, 0, 0, 1);
-		glTranslatef(-0.5, -0.5, 0);
-		glPopAttrib();
-	}
+	glDisable(GL_TEXTURE_2D);
+
+	//crenellations//////////////
+	glPushAttrib(GL_TRANSFORM_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	//glPushMatrix();
+	glLoadIdentity();
+	//glTranslatef(1.0f,1.0f,1.0f);
+	//glTranslatef (this->posX, this->scaleY/2.0f, this->scaleZ+10.0f); /*  move position  */
+	//glScalef(5.0f,5.0f,5.0f);
+
+
+	glBegin(GL_QUADS);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	//glTexCoord2f(this->scaleX/2.0f, this->scaleY/2.0f);
+	glVertex3f(0.5f, 0.5f, 1.0f);
+	//glTexCoord2f(0.0, this->scaleY/2.0f);
+	glVertex3f(-0.5f, 0.5f, 1.0f);
+	//glTexCoord2f(0.0, 0.0);
+	glVertex3f(-0.5f, -0.5f, 1.0f);
+	//glTexCoord2f(this->scaleX/2.0f, 0.0);
+	glVertex3f(0.5f, -0.5f, 1.0f);
+	glEnd();
 	
 	glBegin(GL_QUADS);
-	glNormal3f(-1.0f, 0.0f, 0.0f);
-	glTexCoord2f(this->scaleX, this->scaleY);
-	glVertex3f(-0.5f, 0.5f, 1.0f);
-	glTexCoord2f(0.0, this->scaleY);
-	glVertex3f(-0.5f, 0.5f, 0.0f);
-	glTexCoord2f(0.0, 0.0);
+	glNormal3f(0.0f, 0.0f, -1.0f);
+	//glTexCoord2f(this->scaleX/2.0f, this->scaleY/2.0f);
+	glVertex3f(0.5f, -0.5f, 0.0f);
+	//glTexCoord2f(0.0, this->scaleY/2.0f);
 	glVertex3f(-0.5f, -0.5f, 0.0f);
-	glTexCoord2f(this->scaleX, 0.0);
-	glVertex3f(-0.5f, -0.5f, 1.0f);
+	//glTexCoord2f(0.0, 0.0);
+	glVertex3f(-0.5f, 0.5f, 0.0f);
+	//glTexCoord2f(this->scaleX/2.0f, 0.0);
+	glVertex3f(0.5f, 0.5f, 0.0f);
 	glEnd();
 
-	glDisable(GL_TEXTURE_2D);
+	//glPushAttrib(GL_TRANSFORM_BIT);
+	//glMatrixMode(GL_TEXTURE);
+	//glLoadIdentity();
+	//glTranslatef(0.5, 0.5, 0);
+	//glRotatef(-90.0f, 0, 0, 1);
+	//glTranslatef(-0.5, -0.5, 0);
+	//glPopAttrib();
+
+	glBegin(GL_QUADS);
+	glNormal3f(1.0f, 0.0f, 0.0f);
+	//glTexCoord2f(this->scaleZ/2.0f, this->scaleY/2.0f);
+	glVertex3f(0.5f, 0.5f, 0.0f);
+	//glTexCoord2f(0.0, this->scaleY/2.0f);
+	glVertex3f(0.5f, 0.5f, 1.0f);
+	//glTexCoord2f(0.0, 0.0);
+	glVertex3f(0.5f, -0.5f, 1.0f);
+	//glTexCoord2f(this->scaleZ/2.0f, 0.0);
+	glVertex3f(0.5f, -0.5f, 0.0f);
+	glEnd();
+
+	//glPushAttrib(GL_TRANSFORM_BIT);
+	//glMatrixMode(GL_TEXTURE);
+	//glLoadIdentity();
+	//glTranslatef(0.5, 0.5, 0);
+	//glRotatef(90.0f, 0, 0, 1);
+	//glTranslatef(-0.5, -0.5, 0);
+	//glPopAttrib();
+
+	//Inside Facing wall
+	glBegin(GL_QUADS);
+	glNormal3f(-1.0f, 0.0f, 0.0f);
+	//glTexCoord2f(this->scaleZ/2.0f, this->scaleY/2.0f);
+	glVertex3f(-0.5f, 0.5f, 1.0f);
+	//glTexCoord2f(0.0, this->scaleY/2.0f);
+	glVertex3f(-0.5f, 0.5f, 0.0f);
+	//glTexCoord2f(0.0, 0.0);
+	glVertex3f(-0.5f, -0.5f, 0.0f);
+	//glTexCoord2f(this->scaleZ/2.0f, 0.0);
+	glVertex3f(-0.5f, -0.5f, 1.0f);
+	glEnd();
+	
+	//glPushAttrib(GL_TRANSFORM_BIT);
+	//glMatrixMode(GL_TEXTURE);
+	//glLoadIdentity();
+	//glTranslatef(0.5, 0.5, 0);
+	//glRotatef(90.0f, 0, 0, 1);
+	//glTranslatef(-0.5, -0.5, 0);
+	//glPopAttrib();
+
+	glBegin(GL_QUADS);
+	glNormal3f(0.0f, 1.0f, 0.0f);
+	//glTexCoord2f(this->scaleZ/2.0f, this->scaleX/2.0f);
+	glVertex3f(0.5f, 0.5f, 1.0f);
+	//glTexCoord2f(0.0, this->scaleX/2.0f);
+	glVertex3f(0.5f, 0.5f, 0.0f);
+	//glTexCoord2f(0.0, 0.0);
+	glVertex3f(-0.5f, 0.5f, 0.0f);
+	//glTexCoord2f(this->scaleZ/2.0f, 0.0);
+	glVertex3f(-0.5f, 0.5f, 1.0f);
+	glEnd();
+	
+	//glPushAttrib(GL_TRANSFORM_BIT);
+	//glMatrixMode(GL_TEXTURE);
+	//glLoadIdentity();
+	//glTranslatef(0.5, 0.5, 0);
+	//glRotatef(-90.0f, 0, 0, 1);
+	//glTranslatef(-0.5, -0.5, 0);
+	//glPopAttrib();
+	
+	glBegin(GL_QUADS);
+	glNormal3f(0.0f, -1.0f, 0.0f);
+	//glTexCoord2f(this->scaleZ/2.0f, this->scaleX/2.0f);
+	glVertex3f(0.5f, -0.5f, 0.0f);
+	//glTexCoord2f(0.0, this->scaleX/2.0f);
+	glVertex3f(0.5f, -0.5f, 1.0f);
+	//glTexCoord2f(0.0, 0.0);
+	glVertex3f(-0.5f, -0.5f, 1.0f);
+	//glTexCoord2f(this->scaleZ/2.0f, 0.0);
+	glVertex3f(-0.5f, -0.5f, 0.0f);
+    glEnd();
+
+	glPopMatrix();
+
+	glPopAttrib();
+	/////////////////////////////
+
     glEndList();
 
     initialized = true;

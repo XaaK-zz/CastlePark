@@ -12,6 +12,7 @@
 #include <Fl/gl.h>
 #include <GL/glu.h>
 #include <stdio.h>
+#include <iostream>
 
 const double WorldWindow::FOV_X = 45.0;
 
@@ -36,7 +37,7 @@ WorldWindow::~WorldWindow(void)
 	for(std::vector<WorldObject*>::iterator it = this->worldObjects->begin(); it != this->worldObjects->end(); ++it) {
 		delete (*it);
 	}
-	this->worldObjects->clear();
+	//this->worldObjects->clear();
 	delete worldObjects;
 }
 
@@ -103,17 +104,17 @@ WorldWindow::draw(void)
 		wall->Initialize();
 		worldObjects->push_back(wall);
 
-		wall = new Wall(-50.0f,0.0f,0.0f,3.0f,100.0f,6.0f);
-		wall->Initialize();
-		worldObjects->push_back(wall);
+//		wall = new Wall(-50.0f,0.0f,0.0f,3.0f,100.0f,6.0f);
+//		wall->Initialize();
+//		worldObjects->push_back(wall);
 
-		wall = new Wall(0.0f,50.0f,0.0f,100.0f,3.0f,6.0f);
-		wall->Initialize();
-		worldObjects->push_back(wall);
+//		wall = new Wall(0.0f,50.0f,0.0f,100.0f,3.0f,6.0f);
+//		wall->Initialize();
+//		worldObjects->push_back(wall);
 
-		wall = new Wall(0.0f,-50.0f,0.0f,100.0f,3.0f,6.0f);
-		wall->Initialize();
-		worldObjects->push_back(wall);
+		//wall = new Wall(0.0f,-50.0f,0.0f,100.0f,3.0f,6.0f);
+		//wall->Initialize();
+		//worldObjects->push_back(wall);
 
     }
 
@@ -217,6 +218,8 @@ WorldWindow::Update(float dt)
 int
 WorldWindow::handle(int event)
 {
+	//cout << "event: " << event << endl;
+	
     // Event handling routine. Only looks at mouse events.
     // Stores a bunch of values when the mouse goes down and keeps track
     // of where the mouse is and what mouse button is down, if any.
