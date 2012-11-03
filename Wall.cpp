@@ -8,9 +8,9 @@ Wall::Wall(void)
 }
 
 
-Wall::Wall(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ) 
+Wall::Wall(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, int creDir) 
 : WorldObject(posX, posY, posZ, scaleX, scaleY, scaleZ) {
-
+	this->crenellationDirection = creDir;
 }
 
 Wall::~Wall(void)
@@ -64,6 +64,7 @@ bool Wall::Initialize(void) {
 
     glColor3f(0.0, 0.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
 	glTranslatef (this->posX, this->posY, this->posZ); /*  move position  */
 	glScalef(this->scaleX,this->scaleY,this->scaleZ);
 
@@ -180,125 +181,143 @@ bool Wall::Initialize(void) {
 	glVertex3f(-0.5f, -0.5f, 0.0f);
     glEnd();
 	
-	glDisable(GL_TEXTURE_2D);
+	
+	glPopMatrix();
 
 	//crenellations//////////////
 	glPushAttrib(GL_TRANSFORM_BIT);
 	glMatrixMode(GL_MODELVIEW);
-	//glPushMatrix();
-	glLoadIdentity();
-	//glTranslatef(1.0f,1.0f,1.0f);
-	//glTranslatef (this->posX, this->scaleY/2.0f, this->scaleZ+10.0f); /*  move position  */
-	//glScalef(5.0f,5.0f,5.0f);
-
-
-	glBegin(GL_QUADS);
-	glNormal3f(0.0f, 0.0f, 1.0f);
-	//glTexCoord2f(this->scaleX/2.0f, this->scaleY/2.0f);
-	glVertex3f(0.5f, 0.5f, 1.0f);
-	//glTexCoord2f(0.0, this->scaleY/2.0f);
-	glVertex3f(-0.5f, 0.5f, 1.0f);
-	//glTexCoord2f(0.0, 0.0);
-	glVertex3f(-0.5f, -0.5f, 1.0f);
-	//glTexCoord2f(this->scaleX/2.0f, 0.0);
-	glVertex3f(0.5f, -0.5f, 1.0f);
-	glEnd();
 	
-	glBegin(GL_QUADS);
-	glNormal3f(0.0f, 0.0f, -1.0f);
-	//glTexCoord2f(this->scaleX/2.0f, this->scaleY/2.0f);
-	glVertex3f(0.5f, -0.5f, 0.0f);
-	//glTexCoord2f(0.0, this->scaleY/2.0f);
-	glVertex3f(-0.5f, -0.5f, 0.0f);
-	//glTexCoord2f(0.0, 0.0);
-	glVertex3f(-0.5f, 0.5f, 0.0f);
-	//glTexCoord2f(this->scaleX/2.0f, 0.0);
-	glVertex3f(0.5f, 0.5f, 0.0f);
-	glEnd();
+	float xAdjust = 1.0f;
+	float yAdjust = 1.0f;
+	int iteratorMax = 0;
+	if(this->crenellationDirection == WEST || this->crenellationDirection == EAST) {
+		iteratorMax = ((this->scaleY/2.75f));
+	}
+	else {
+		iteratorMax = ((this->scaleX/2.75f));
+	}
 
-	//glPushAttrib(GL_TRANSFORM_BIT);
-	//glMatrixMode(GL_TEXTURE);
-	//glLoadIdentity();
-	//glTranslatef(0.5, 0.5, 0);
-	//glRotatef(-90.0f, 0, 0, 1);
-	//glTranslatef(-0.5, -0.5, 0);
-	//glPopAttrib();
+	for(int i=0;i<iteratorMax;i++) {
+		glPushMatrix();
+		if(this->crenellationDirection == WEST) {
+			xAdjust = -1.0f;
+		}
+		if(this->crenellationDirection == SOUTH) {
+			yAdjust = -1.0f;
+		}
 
-	glBegin(GL_QUADS);
-	glNormal3f(1.0f, 0.0f, 0.0f);
-	//glTexCoord2f(this->scaleZ/2.0f, this->scaleY/2.0f);
-	glVertex3f(0.5f, 0.5f, 0.0f);
-	//glTexCoord2f(0.0, this->scaleY/2.0f);
-	glVertex3f(0.5f, 0.5f, 1.0f);
-	//glTexCoord2f(0.0, 0.0);
-	glVertex3f(0.5f, -0.5f, 1.0f);
-	//glTexCoord2f(this->scaleZ/2.0f, 0.0);
-	glVertex3f(0.5f, -0.5f, 0.0f);
-	glEnd();
+		if(this->crenellationDirection == WEST || this->crenellationDirection == EAST) {
+			glTranslatef (this->posX + xAdjust, (this->scaleY/2.0f-1.0f) - (i*2.75f), this->scaleZ); /*  move position  */
+			glScalef(1.0f,2.0f,1.0f);
+		}
+		else {
+			glTranslatef (this->posX + (this->scaleX/2.0f-1.0f) - (i*2.75f),this->posY + yAdjust , this->scaleZ); /*  move position  */
+			glScalef(2.0f,1.0f,1.0f);
+		}
+		
 
-	//glPushAttrib(GL_TRANSFORM_BIT);
-	//glMatrixMode(GL_TEXTURE);
-	//glLoadIdentity();
-	//glTranslatef(0.5, 0.5, 0);
-	//glRotatef(90.0f, 0, 0, 1);
-	//glTranslatef(-0.5, -0.5, 0);
-	//glPopAttrib();
+		glBegin(GL_QUADS);
+		glNormal3f(0.0f, 0.0f, 1.0f);
+		glTexCoord2f(1.0f,1.0f);
+		glVertex3f(0.5f, 0.5f, 1.0f);
+		glTexCoord2f(0.0, 1.0f);
+		glVertex3f(-0.5f, 0.5f, 1.0f);
+		glTexCoord2f(0.0, 0.0);
+		glVertex3f(-0.5f, -0.5f, 1.0f);
+		glTexCoord2f(1.0f, 0.0);
+		glVertex3f(0.5f, -0.5f, 1.0f);
+		glEnd();
+		
+		glBegin(GL_QUADS);
+		glNormal3f(0.0f, 0.0f, -1.0f);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(0.5f, -0.5f, 0.0f);
+		glTexCoord2f(0.0,1.0f);
+		glVertex3f(-0.5f, -0.5f, 0.0f);
+		glTexCoord2f(0.0, 0.0);
+		glVertex3f(-0.5f, 0.5f, 0.0f);
+		glTexCoord2f(1.0f, 0.0);
+		glVertex3f(0.5f, 0.5f, 0.0f);
+		glEnd();
 
-	//Inside Facing wall
-	glBegin(GL_QUADS);
-	glNormal3f(-1.0f, 0.0f, 0.0f);
-	//glTexCoord2f(this->scaleZ/2.0f, this->scaleY/2.0f);
-	glVertex3f(-0.5f, 0.5f, 1.0f);
-	//glTexCoord2f(0.0, this->scaleY/2.0f);
-	glVertex3f(-0.5f, 0.5f, 0.0f);
-	//glTexCoord2f(0.0, 0.0);
-	glVertex3f(-0.5f, -0.5f, 0.0f);
-	//glTexCoord2f(this->scaleZ/2.0f, 0.0);
-	glVertex3f(-0.5f, -0.5f, 1.0f);
-	glEnd();
+		//glPushAttrib(GL_TRANSFORM_BIT);
+		//glMatrixMode(GL_TEXTURE);
+		//glLoadIdentity();
+		//glTranslatef(0.5, 0.5, 0);
+		//glRotatef(-90.0f, 0, 0, 1);
+		//glTranslatef(-0.5, -0.5, 0);
+		//glPopAttrib();
+
+		glBegin(GL_QUADS);
+		glNormal3f(1.0f, 0.0f, 0.0f);
+		glTexCoord2f(1.0f,1.0f);
+		glVertex3f(0.5f, 0.5f, 0.0f);
+		glTexCoord2f(0.0, 1.0f);
+		glVertex3f(0.5f, 0.5f, 1.0f);
+		glTexCoord2f(0.0, 0.0);
+		glVertex3f(0.5f, -0.5f, 1.0f);
+		glTexCoord2f(1.0f, 0.0);
+		glVertex3f(0.5f, -0.5f, 0.0f);
+		glEnd();
+
+		//Inside Facing wall
+		glBegin(GL_QUADS);
+		glNormal3f(-1.0f, 0.0f, 0.0f);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(-0.5f, 0.5f, 1.0f);
+		glTexCoord2f(0.0, 1.0f);
+		glVertex3f(-0.5f, 0.5f, 0.0f);
+		glTexCoord2f(0.0, 0.0);
+		glVertex3f(-0.5f, -0.5f, 0.0f);
+		glTexCoord2f(1.0f, 0.0);
+		glVertex3f(-0.5f, -0.5f, 1.0f);
+		glEnd();
+		
+		//glPushAttrib(GL_TRANSFORM_BIT);
+		//glMatrixMode(GL_TEXTURE);
+		//glLoadIdentity();
+		//glTranslatef(0.5, 0.5, 0);
+		//glRotatef(90.0f, 0, 0, 1);
+		//glTranslatef(-0.5, -0.5, 0);
+		//glPopAttrib();
+
+		glBegin(GL_QUADS);
+		glNormal3f(0.0f, 1.0f, 0.0f);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(0.5f, 0.5f, 1.0f);
+		glTexCoord2f(0.0, 1.0f);
+		glVertex3f(0.5f, 0.5f, 0.0f);
+		glTexCoord2f(0.0, 0.0);
+		glVertex3f(-0.5f, 0.5f, 0.0f);
+		glTexCoord2f(1.0f, 0.0);
+		glVertex3f(-0.5f, 0.5f, 1.0f);
+		glEnd();
+		
+		//glPushAttrib(GL_TRANSFORM_BIT);
+		//glMatrixMode(GL_TEXTURE);
+		//glLoadIdentity();
+		//glTranslatef(0.5, 0.5, 0);
+		//glRotatef(-90.0f, 0, 0, 1);
+		//glTranslatef(-0.5, -0.5, 0);
+		//glPopAttrib();
+		
+		glBegin(GL_QUADS);
+		glNormal3f(0.0f, -1.0f, 0.0f);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(0.5f, -0.5f, 0.0f);
+		glTexCoord2f(0.0,1.0f);
+		glVertex3f(0.5f, -0.5f, 1.0f);
+		glTexCoord2f(0.0, 0.0);
+		glVertex3f(-0.5f, -0.5f, 1.0f);
+		glTexCoord2f(1.0f, 0.0);
+		glVertex3f(-0.5f, -0.5f, 0.0f);
+		glEnd();
+		glPopMatrix();
+	}
+
 	
-	//glPushAttrib(GL_TRANSFORM_BIT);
-	//glMatrixMode(GL_TEXTURE);
-	//glLoadIdentity();
-	//glTranslatef(0.5, 0.5, 0);
-	//glRotatef(90.0f, 0, 0, 1);
-	//glTranslatef(-0.5, -0.5, 0);
-	//glPopAttrib();
-
-	glBegin(GL_QUADS);
-	glNormal3f(0.0f, 1.0f, 0.0f);
-	//glTexCoord2f(this->scaleZ/2.0f, this->scaleX/2.0f);
-	glVertex3f(0.5f, 0.5f, 1.0f);
-	//glTexCoord2f(0.0, this->scaleX/2.0f);
-	glVertex3f(0.5f, 0.5f, 0.0f);
-	//glTexCoord2f(0.0, 0.0);
-	glVertex3f(-0.5f, 0.5f, 0.0f);
-	//glTexCoord2f(this->scaleZ/2.0f, 0.0);
-	glVertex3f(-0.5f, 0.5f, 1.0f);
-	glEnd();
-	
-	//glPushAttrib(GL_TRANSFORM_BIT);
-	//glMatrixMode(GL_TEXTURE);
-	//glLoadIdentity();
-	//glTranslatef(0.5, 0.5, 0);
-	//glRotatef(-90.0f, 0, 0, 1);
-	//glTranslatef(-0.5, -0.5, 0);
-	//glPopAttrib();
-	
-	glBegin(GL_QUADS);
-	glNormal3f(0.0f, -1.0f, 0.0f);
-	//glTexCoord2f(this->scaleZ/2.0f, this->scaleX/2.0f);
-	glVertex3f(0.5f, -0.5f, 0.0f);
-	//glTexCoord2f(0.0, this->scaleX/2.0f);
-	glVertex3f(0.5f, -0.5f, 1.0f);
-	//glTexCoord2f(0.0, 0.0);
-	glVertex3f(-0.5f, -0.5f, 1.0f);
-	//glTexCoord2f(this->scaleZ/2.0f, 0.0);
-	glVertex3f(-0.5f, -0.5f, 0.0f);
-    glEnd();
-
-	glPopMatrix();
-
+glDisable(GL_TEXTURE_2D);
 	glPopAttrib();
 	/////////////////////////////
 

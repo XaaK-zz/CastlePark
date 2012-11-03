@@ -100,21 +100,25 @@ WorldWindow::draw(void)
 		// Initialize all the objects.
 		ground.Initialize();
 		traintrack.Initialize();
-		Wall *wall = new Wall(50.0f,0.0f,0.0f,3.0f,100.0f,6.0f);
+		Wall *wall = new Wall(50.0f,0.0f,0.0f,3.0f,100.0f,6.0f,EAST);
 		wall->Initialize();
 		worldObjects->push_back(wall);
 
-//		wall = new Wall(-50.0f,0.0f,0.0f,3.0f,100.0f,6.0f);
-//		wall->Initialize();
-//		worldObjects->push_back(wall);
+		wall = new Wall(-50.0f,0.0f,0.0f,3.0f,100.0f,6.0f,WEST);
+		wall->Initialize();
+		worldObjects->push_back(wall);
 
-//		wall = new Wall(0.0f,50.0f,0.0f,100.0f,3.0f,6.0f);
-//		wall->Initialize();
-//		worldObjects->push_back(wall);
+		wall = new Wall(0.0f,50.0f,0.0f,100.0f,3.0f,6.0f,NORTH);
+		wall->Initialize();
+		worldObjects->push_back(wall);
 
-		//wall = new Wall(0.0f,-50.0f,0.0f,100.0f,3.0f,6.0f);
-		//wall->Initialize();
-		//worldObjects->push_back(wall);
+		wall = new Wall(30.0f,-50.0f,0.0f,40.0f,3.0f,6.0f,SOUTH);
+		wall->Initialize();
+		worldObjects->push_back(wall);
+
+		wall = new Wall(-30.0f,-50.0f,0.0f,40.0f,3.0f,6.0f,SOUTH);
+		wall->Initialize();
+		worldObjects->push_back(wall);
 
     }
 
