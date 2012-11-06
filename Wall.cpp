@@ -192,10 +192,10 @@ glPushMatrix();
 	float yAdjust = 1.0f;
 	int iteratorMax = 0;
 	if(this->crenellationDirection == WEST || this->crenellationDirection == EAST) {
-		iteratorMax = ((this->scaleY/2.75f));
+		iteratorMax = (this->scaleY/2.75f);
 	}
 	else {
-		iteratorMax = ((this->scaleX/2.75f));
+		iteratorMax = (this->scaleX/2.75f);
 	}
 
 	for(int i=0;i<iteratorMax;i++) {

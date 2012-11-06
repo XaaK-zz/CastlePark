@@ -13,6 +13,7 @@
 #include <GL/glu.h>
 #include <stdio.h>
 #include <iostream>
+#include "Tower.h"
 
 const double WorldWindow::FOV_X = 45.0;
 
@@ -119,6 +120,10 @@ WorldWindow::draw(void)
 		wall = new Wall(-30.0f,-50.0f,0.0f,40.0f,3.0f,6.0f,SOUTH);
 		wall->Initialize();
 		worldObjects->push_back(wall);
+
+		Tower *tower = new Tower(0,0,0,5.0f,5.0f,10.0f);
+		tower->Initialize();
+		worldObjects->push_back(tower);
 
     }
 
