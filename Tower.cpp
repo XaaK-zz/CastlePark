@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <GL/glu.h>
 
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 Tower::Tower(void)
 {
@@ -18,6 +20,26 @@ Tower::~Tower(void)
 {
 }
 
+float *computeNormal(float trianglePt1X,float trianglePt1Y,float trianglePt1Z,
+					 float trianglePt2X,float trianglePt2Y,float trianglePt2Z,
+					 float trianglePt3X,float trianglePt3Y,float trianglePt3Z) {
+	float *returnValues = new float[3];
+	
+	float Ux = trianglePt2X - trianglePt1X;
+	float Uy = trianglePt2Y - trianglePt1Y;
+	float Uz = trianglePt2Z - trianglePt1Z;
+
+	float Vx = trianglePt3X - trianglePt1X;
+	float Vy = trianglePt3Y - trianglePt1Y;
+	float Vz = trianglePt3Z - trianglePt1Z;
+
+	returnValues[0] = (Uy * Vz) - (Uz * Vy);
+	returnValues[1] = (Uz * Vx) - (Ux * Vz);
+	returnValues[2] = (Ux * Vy) - (Uy * Vx);
+
+	return returnValues;
+}
+
 bool Tower::Initialize(void) {
 
 	ubyte   *image_data;
@@ -27,13 +49,13 @@ bool Tower::Initialize(void) {
 
     // Load the image for the texture. The texture file has to be in
     // a place where it will be found.
-    if ( ! ( image_data = (ubyte*)tga_load("StoneWall1.tga", &image_width,
+    if ( ! ( image_data = (ubyte*)tga_load("wall.tga", &image_width,
 					   &image_height, TGA_TRUECOLOR_24) ) )
     {
 		fprintf(stderr, "Wall::Initialize: Couldn't load StoneWall1.tga\n");
 		return false;
     }
-	if ( ! ( image_data2 = (ubyte*)tga_load("StoneWall2.tga", &image_width2,
+	if ( ! ( image_data2 = (ubyte*)tga_load("wall.tga", &image_width2,
 					   &image_height2, TGA_TRUECOLOR_24) ) )
     {
 		fprintf(stderr, "Wall::Initialize: Couldn't load StoneWall2.tga\n");
@@ -162,6 +184,7 @@ bool Tower::Initialize(void) {
 	glPopMatrix();
 
 	glBindTexture(GL_TEXTURE_2D, this->texture_obj2);
+	/*
 	//crenallations
 	for(int x=1;x<2;x++) {
 		glPushMatrix();
@@ -281,8 +304,32 @@ bool Tower::Initialize(void) {
 			glEnd();
 			glPopMatrix();
 		}
-	}
+		
 
+		
+	}
+*/
+	glPushMatrix();
+	glTranslatef (this->posX, this->posY, this->scaleZ-0.35f); 
+	glScalef(this->scaleX/1.5f,this->scaleY/1.5f,5.0f);
+	float angle = 0.0f;
+
+	glBegin(GL_TRIANGLE_FAN);
+	glVertex3f(0,0,0.5f);
+	for(int i=0;i<10;i++) {
+		
+		angle = i*2*M_PI/10;
+
+		float *temp = computeNormal(0,0,0.5f,cos(angle),sin(angle),0.0f,cos((i+1)*2*M_PI/10),sin((i+1)*2*M_PI/10),0.0f);
+		glNormal3f(-temp[0], -temp[1],-temp[2]);
+		glVertex3f(cos(angle),sin(angle),0.0f);
+		delete [] temp;
+		//angle = i*2*M_PI/360;
+		//glVertex3f(cos(angle),sin(angle),0.5f);
+	}
+	glVertex3f(cos(0.0f),sin(0.0f),0.0f);
+	glEnd();
+	glPopMatrix();
 
 glDisable(GL_TEXTURE_2D);
 	glPopAttrib();
