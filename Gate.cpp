@@ -1,22 +1,23 @@
-#include "Tower.h"
+#include "Gate.h"
 
-
-Tower::Tower(void)
+Gate::Gate(void)
 {
 }
 
-Tower::Tower(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, int roofTri) 
+
+Gate::Gate(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ) 
 : WorldObject(posX, posY, posZ, scaleX, scaleY, scaleZ) {
-	this->numRoofTriangles = roofTri;
+
+	this->gateState = GATE_CLOSED;
 }
 
 
-Tower::~Tower(void)
+Gate::~Gate(void)
 {
 }
 
-bool Tower::Initialize(void) {
-
+bool Gate::Initialize(void) {
+	
 	ubyte   *image_data;
 	ubyte   *image_data2;
     int	    image_height, image_width;
@@ -24,7 +25,7 @@ bool Tower::Initialize(void) {
 
     // Load the image for the texture. The texture file has to be in
     // a place where it will be found.
-    if ( ! ( image_data = (ubyte*)tga_load("wall.tga", &image_width,
+    if ( ! ( image_data = (ubyte*)tga_load("woodTex.tga", &image_width,
 					   &image_height, TGA_TRUECOLOR_24) ) )
     {
 		fprintf(stderr, "Wall::Initialize: Couldn't load StoneWall1.tga\n");
@@ -74,6 +75,7 @@ bool Tower::Initialize(void) {
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); 
 
 	glBindTexture(GL_TEXTURE_2D, this->texture_obj);
+
 	this->displayList = glGenLists(1);
     glNewList(this->displayList, GL_COMPILE);
 	glEnable(GL_TEXTURE_2D);
@@ -85,20 +87,18 @@ bool Tower::Initialize(void) {
 	glTranslatef (this->posX, this->posY, this->posZ); /*  move position  */
 	glScalef(this->scaleX,this->scaleY,this->scaleZ);
 
-	//TOP
-	glBegin(GL_QUADS);
+    glBegin(GL_QUADS);
 	glNormal3f(0.0f, 0.0f, 1.0f);
 	glTexCoord2f(this->scaleX/2.0f, this->scaleY/2.0f);
-	glVertex3f(0.4f, 0.4f, 1.0f);
+	glVertex3f(0.5f, 0.5f, 1.0f);
 	glTexCoord2f(0.0, this->scaleY/2.0f);
-	glVertex3f(-0.4f, 0.4f, 1.0f);
+	glVertex3f(-0.5f, 0.5f, 1.0f);
 	glTexCoord2f(0.0, 0.0);
-	glVertex3f(-0.4f, -0.4f, 1.0f);
+	glVertex3f(-0.5f, -0.5f, 1.0f);
 	glTexCoord2f(this->scaleX/2.0f, 0.0);
-	glVertex3f(0.4f, -0.4f, 1.0f);
+	glVertex3f(0.5f, -0.5f, 1.0f);
 	glEnd();
 	
-	//Bottom
 	glBegin(GL_QUADS);
 	glNormal3f(0.0f, 0.0f, -1.0f);
 	glTexCoord2f(this->scaleX/2.0f, this->scaleY/2.0f);
@@ -111,105 +111,91 @@ bool Tower::Initialize(void) {
 	glVertex3f(0.5f, 0.5f, 0.0f);
 	glEnd();
 
+	glPushAttrib(GL_TRANSFORM_BIT);
+	glMatrixMode(GL_TEXTURE);
+	glLoadIdentity();
+	glTranslatef(0.5, 0.5, 0);
+	glRotatef(-90.0f, 0, 0, 1);
+	glTranslatef(-0.5, -0.5, 0);
+	glPopAttrib();
+
 	glBegin(GL_QUADS);
 	glNormal3f(1.0f, 0.0f, 0.0f);
 	glTexCoord2f(this->scaleZ/2.0f, this->scaleY/2.0f);
 	glVertex3f(0.5f, 0.5f, 0.0f);
 	glTexCoord2f(0.0, this->scaleY/2.0f);
-	glVertex3f(0.4f, 0.4f, 1.0f);
+	glVertex3f(0.5f, 0.5f, 1.0f);
 	glTexCoord2f(0.0, 0.0);
-	glVertex3f(0.4f, -0.4f, 1.0f);
+	glVertex3f(0.5f, -0.5f, 1.0f);
 	glTexCoord2f(this->scaleZ/2.0f, 0.0);
 	glVertex3f(0.5f, -0.5f, 0.0f);
 	glEnd();
 
+	glPushAttrib(GL_TRANSFORM_BIT);
+	glMatrixMode(GL_TEXTURE);
+	glLoadIdentity();
+	glTranslatef(0.5, 0.5, 0);
+	glRotatef(90.0f, 0, 0, 1);
+	glTranslatef(-0.5, -0.5, 0);
+	glPopAttrib();
+
+	//Inside Facing wall
 	glBegin(GL_QUADS);
 	glNormal3f(-1.0f, 0.0f, 0.0f);
 	glTexCoord2f(this->scaleZ/2.0f, this->scaleY/2.0f);
-	glVertex3f(-0.4f, 0.4f, 1.0f);
+	glVertex3f(-0.5f, 0.5f, 1.0f);
 	glTexCoord2f(0.0, this->scaleY/2.0f);
 	glVertex3f(-0.5f, 0.5f, 0.0f);
 	glTexCoord2f(0.0, 0.0);
 	glVertex3f(-0.5f, -0.5f, 0.0f);
 	glTexCoord2f(this->scaleZ/2.0f, 0.0);
-	glVertex3f(-0.4f, -0.4f, 1.0f);
+	glVertex3f(-0.5f, -0.5f, 1.0f);
 	glEnd();
 	
+	glPushAttrib(GL_TRANSFORM_BIT);
+	glMatrixMode(GL_TEXTURE);
+	glLoadIdentity();
+	glTranslatef(0.5, 0.5, 0);
+	glRotatef(90.0f, 0, 0, 1);
+	glTranslatef(-0.5, -0.5, 0);
+	glPopAttrib();
+
 	glBegin(GL_QUADS);
 	glNormal3f(0.0f, 1.0f, 0.0f);
 	glTexCoord2f(this->scaleZ/2.0f, this->scaleX/2.0f);
-	glVertex3f(0.4f, 0.4f, 1.0f);
+	glVertex3f(0.5f, 0.5f, 1.0f);
 	glTexCoord2f(0.0, this->scaleX/2.0f);
 	glVertex3f(0.5f, 0.5f, 0.0f);
 	glTexCoord2f(0.0, 0.0);
 	glVertex3f(-0.5f, 0.5f, 0.0f);
 	glTexCoord2f(this->scaleZ/2.0f, 0.0);
-	glVertex3f(-0.4f, 0.4f, 1.0f);
+	glVertex3f(-0.5f, 0.5f, 1.0f);
 	glEnd();
-
+	
+	glPushAttrib(GL_TRANSFORM_BIT);
+	glMatrixMode(GL_TEXTURE);
+	glLoadIdentity();
+	glTranslatef(0.5, 0.5, 0);
+	glRotatef(-90.0f, 0, 0, 1);
+	glTranslatef(-0.5, -0.5, 0);
+	glPopAttrib();
+	
 	glBegin(GL_QUADS);
 	glNormal3f(0.0f, -1.0f, 0.0f);
 	glTexCoord2f(this->scaleZ/2.0f, this->scaleX/2.0f);
 	glVertex3f(0.5f, -0.5f, 0.0f);
 	glTexCoord2f(0.0, this->scaleX/2.0f);
-	glVertex3f(0.4f, -0.4f, 1.0f);
+	glVertex3f(0.5f, -0.5f, 1.0f);
 	glTexCoord2f(0.0, 0.0);
-	glVertex3f(-0.4f, -0.4f, 1.0f);
+	glVertex3f(-0.5f, -0.5f, 1.0f);
 	glTexCoord2f(this->scaleZ/2.0f, 0.0);
 	glVertex3f(-0.5f, -0.5f, 0.0f);
     glEnd();
+	
+	
 	glPopMatrix();
-
-	glBindTexture(GL_TEXTURE_2D, this->texture_obj2);
-
-	glPushMatrix();
-	glTranslatef (this->posX, this->posY, this->scaleZ-0.35f); 
-	glScalef(this->scaleX/1.3f,this->scaleY/1.3f,5.0f);
 	
-	float angle = 0.0f;
-	float nextAngle = 0.0f;
-	
-	glBegin(GL_TRIANGLES);
-	
-	for(int i=0;i<this->numRoofTriangles;i++) {
-		angle = i*2*M_PI/this->numRoofTriangles;
-		nextAngle = (i+1)*2*M_PI/this->numRoofTriangles;
-		float *temp = computeNormal(0,0,0.5f,cos(angle),sin(angle),0.0f,cos(nextAngle),sin(nextAngle),0.0f);
-		glNormal3f(temp[0], temp[1],temp[2]);
-
-		glTexCoord2f(0.5f, 5.0f);
-		glVertex3f(0,0,0.5f);
-		glTexCoord2f(1.0f, 1.0f);
-		glVertex3f(cos(angle),sin(angle),0.0f);
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex3f(cos(nextAngle),sin(nextAngle),0.0f);
-		delete [] temp;
-	}
-	glEnd();
-
-/*
-	glBegin(GL_TRIANGLE_FAN);
-	glTexCoord2f(0.5f, 5.0f);
-	glVertex3f(0,0,0.5f);
-	for(int i=0;i<10;i++) {
-		
-		angle = i*2*M_PI/10;
-
-		float *temp = computeNormal(0,0,0.5f,cos(angle),sin(angle),0.0f,cos((i+1)*2*M_PI/10),sin((i+1)*2*M_PI/10),0.0f);
-		glNormal3f(temp[0], temp[1],temp[2]);
-		glTexCoord2f(cos(angle), sin(angle));
-		glVertex3f(cos(angle),sin(angle),0.0f);
-		delete [] temp;
-		//angle = i*2*M_PI/360;
-		//glVertex3f(cos(angle),sin(angle),0.5f);
-	}
-	glTexCoord2f(cos(0.0f), sin(0.0f));
-	glVertex3f(cos(0.0f),sin(0.0f),0.0f);
-	glEnd();
-*/
-	glPopMatrix();
-
-glDisable(GL_TEXTURE_2D);
+	glDisable(GL_TEXTURE_2D);
 	glPopAttrib();
 	/////////////////////////////
 
@@ -220,11 +206,11 @@ glDisable(GL_TEXTURE_2D);
     return true;
 }
 
-void Tower::Update(float) {
+void Gate::Update(float) {
 
 }
 
-void Tower::Draw(void) {
+void Gate::Draw(void) {
 	
 	if (!initialized) {
 		return;

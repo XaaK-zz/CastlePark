@@ -42,3 +42,23 @@ void WorldObject::Update(float) {
 void WorldObject::Draw(void) {
 
 }
+
+float* WorldObject::computeNormal(float trianglePt1X,float trianglePt1Y,float trianglePt1Z,
+					 float trianglePt2X,float trianglePt2Y,float trianglePt2Z,
+					 float trianglePt3X,float trianglePt3Y,float trianglePt3Z) {
+	float *returnValues = new float[3];
+	
+	float Ux = trianglePt2X - trianglePt1X;
+	float Uy = trianglePt2Y - trianglePt1Y;
+	float Uz = trianglePt2Z - trianglePt1Z;
+
+	float Vx = trianglePt3X - trianglePt1X;
+	float Vy = trianglePt3Y - trianglePt1Y;
+	float Vz = trianglePt3Z - trianglePt1Z;
+
+	returnValues[0] = (Uy * Vz) - (Uz * Vy);
+	returnValues[1] = (Uz * Vx) - (Ux * Vz);
+	returnValues[2] = (Ux * Vy) - (Uy * Vx);
+
+	return returnValues;
+}

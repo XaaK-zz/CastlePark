@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <iostream>
 #include "Tower.h"
+#include "Gate.h"
 
 const double WorldWindow::FOV_X = 45.0;
 
@@ -121,10 +122,40 @@ WorldWindow::draw(void)
 		wall->Initialize();
 		worldObjects->push_back(wall);
 
-		Tower *tower = new Tower(0,0,0,5.0f,5.0f,10.0f);
+		//Corner Towers/////////////////////////////////
+		Tower *tower = new Tower(50.0f,50.0f,0,5.0f,5.0f,12.0f,20);
 		tower->Initialize();
 		worldObjects->push_back(tower);
 
+		tower = new Tower(-50.0f,50.0f,0,5.0f,5.0f,12.0f,20);
+		tower->Initialize();
+		worldObjects->push_back(tower);
+
+		tower = new Tower(50.0f,-50.0f,0,5.0f,5.0f,12.0f,20);
+		tower->Initialize();
+		worldObjects->push_back(tower);
+
+		tower = new Tower(-50.0f,-50.0f,0,5.0f,5.0f,12.0f,20);
+		tower->Initialize();
+		worldObjects->push_back(tower);
+		/////////////////////////////////////////////
+
+		//Gate
+		tower = new Tower(10.0f,-50.0f,0,5.0f,5.0f,12.0f,20);
+		tower->Initialize();
+		worldObjects->push_back(tower);
+
+		tower = new Tower(-10.0f,-50.0f,0,5.0f,5.0f,12.0f,20);
+		tower->Initialize();
+		worldObjects->push_back(tower);
+
+		Gate *gate = new Gate(-3.8f,-50.0f,0.5f,7.5f,0.7f,5.0f);
+		gate->Initialize();
+		worldObjects->push_back(gate);
+
+		gate = new Gate(3.8f,-50.0f,0.5f,7.5f,0.7f,5.0f);
+		gate->Initialize();
+		worldObjects->push_back(gate);
     }
 
     // Stuff out here relies on a coordinate system or must be done on every

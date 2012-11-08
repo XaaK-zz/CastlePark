@@ -9,10 +9,11 @@ class Tower :
 protected:
 	GLuint  texture_obj;    // The object for the grass texture.
     GLuint  texture_obj2;    // The object for the grass texture.
-    
+    int numRoofTriangles;
+
 public:
 	Tower(void);
-	Tower(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ);
+	Tower(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ,int roofTri);
 	
 	~Tower(void);
 
