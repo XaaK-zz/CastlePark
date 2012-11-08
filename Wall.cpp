@@ -55,14 +55,14 @@ bool Wall::Initialize(void) {
 
     // This says what to do with the texture. Modulate will multiply the
     // texture by the underlying color.
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE); 
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); 
 
 	this->displayList = glGenLists(1);
     glNewList(this->displayList, GL_COMPILE);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, this->texture_obj);
 
-    glColor3f(0.0, 0.0, 1.0);
+    glColor3f(1.0, 1.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
 glPushMatrix();
 	glTranslatef (this->posX, this->posY, this->posZ); /*  move position  */
