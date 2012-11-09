@@ -31,6 +31,8 @@ WorldWindow::WorldWindow(int x, int y, int width, int height, char *label)
     y_at = 0.0f;
 
 	worldObjects = new vector<WorldObject*>();
+
+	this->signalGates = false;
 }
 
 // Destructor
@@ -149,11 +151,11 @@ WorldWindow::draw(void)
 		tower->Initialize();
 		worldObjects->push_back(tower);
 
-		Gate *gate = new Gate(-3.8f,-50.0f,0.5f,7.5f,0.7f,5.0f);
+		Gate *gate = new Gate(-3.8f,-50.0f,0.5f,7.5f,0.7f,5.0f,7.5f/2.0f,1);
 		gate->Initialize();
 		worldObjects->push_back(gate);
 
-		gate = new Gate(3.8f,-50.0f,0.5f,7.5f,0.7f,5.0f);
+		gate = new Gate(3.8f,-50.0f,0.5f,7.5f,0.7f,5.0f,-7.5f/2.0f,-1);
 		gate->Initialize();
 		worldObjects->push_back(gate);
     }
@@ -251,6 +253,17 @@ WorldWindow::Update(float dt)
     // Animate the train.
     traintrack.Update(dt);
 
+	for(std::vector<WorldObject*>::iterator it = this->worldObjects->begin(); it != this->worldObjects->end(); ++it) {
+		if(signalGates) {
+			Gate *temp = dynamic_cast<Gate*>(*it);
+			if(temp != NULL) {
+				temp->ChangeGateState();
+			}
+		}
+		(*it)->Update(dt);
+	}
+
+	signalGates = false;
     return true;
 }
 
@@ -267,21 +280,24 @@ WorldWindow::handle(int event)
     {
       case FL_PUSH:
         button = Fl::event_button();
-	x_last = x_down = Fl::event_x();
-	y_last = y_down = Fl::event_y();
-	phi_down = phi;
-	theta_down = theta;
-	dist_down = dist;
-	x_at_down = x_at;
-	y_at_down = y_at;
-	return 1;
+		x_last = x_down = Fl::event_x();
+		y_last = y_down = Fl::event_y();
+		phi_down = phi;
+		theta_down = theta;
+		dist_down = dist;
+		x_at_down = x_at;
+		y_at_down = y_at;
+		return 1;
       case FL_DRAG:
-	x_last = Fl::event_x();
-	y_last = Fl::event_y();
-	return 1;
+		x_last = Fl::event_x();
+		y_last = Fl::event_y();
+		return 1;
       case FL_RELEASE:
-        button = -1;
-	return 1;
+		button = -1;
+		return 1;
+	  case FL_KEYUP:
+		  if(Fl::event_key() == (int)'o')
+			  signalGates = true;
     }
 
     // Pass any other event types on the superclass.

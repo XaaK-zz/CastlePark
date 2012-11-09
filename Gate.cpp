@@ -5,10 +5,13 @@ Gate::Gate(void)
 }
 
 
-Gate::Gate(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ) 
+Gate::Gate(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, float pPoint, float gateDir) 
 : WorldObject(posX, posY, posZ, scaleX, scaleY, scaleZ) {
 
 	this->gateState = GATE_CLOSED;
+	this->rotateAngle = 0.0;
+	this->pivotPoint = pPoint;
+	this->gateDirection = gateDir;
 }
 
 
@@ -83,9 +86,7 @@ bool Gate::Initialize(void) {
 
     glColor3f(1.0, 1.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glTranslatef (this->posX, this->posY, this->posZ); /*  move position  */
-	glScalef(this->scaleX,this->scaleY,this->scaleZ);
+	//glPushMatrix();
 
     glBegin(GL_QUADS);
 	glNormal3f(0.0f, 0.0f, 1.0f);
@@ -193,7 +194,7 @@ bool Gate::Initialize(void) {
     glEnd();
 	
 	
-	glPopMatrix();
+	//glPopMatrix();
 	
 	glDisable(GL_TEXTURE_2D);
 	glPopAttrib();
@@ -206,8 +207,22 @@ bool Gate::Initialize(void) {
     return true;
 }
 
-void Gate::Update(float) {
+void Gate::Update(float dt) {
 
+	if(this->gateState == GATE_OPENING) {
+		this->rotateAngle += 0.5f;
+		if(this->rotateAngle >= 91.0f) {
+			this->gateState = GATE_OPEN;
+			this->rotateAngle = 90.0f;
+		}
+	}
+	else if(this->gateState == GATE_CLOSING) {
+		this->rotateAngle -= 0.5f;
+		if(this->rotateAngle <= 0.0f) {
+			this->gateState = GATE_CLOSED;
+			this->rotateAngle = 0.0f;
+		}
+	}
 }
 
 void Gate::Draw(void) {
@@ -217,9 +232,40 @@ void Gate::Draw(void) {
 	}
 
     glPushMatrix();
+	
+	glTranslatef (this->posX-this->pivotPoint, this->posY, this->posZ); /*  move position  */
+	//glTranslatef (-this->scaleX/2.0f, 0.0f, 0.0f); /*  move position  */
+	
+	if(gateDirection == 1)
+		glRotatef(this->rotateAngle,0,0,1.0f);
+	else
+		glRotatef(-this->rotateAngle,0,0,1.0f);
+
+	glTranslatef (this->pivotPoint, 0.0f, 0.0f); /*  move position  */
+	
+	glScalef(this->scaleX,this->scaleY,this->scaleZ);
+	//glTranslatef(0.0f,this->scaleY,0.0f);
+	
+	
+	//glRotatef(this->rotateAngle,0,0,1.0f);
 
     // Draw the wall
 	glCallList(this->displayList);
 
 	glPopMatrix();
+}
+
+void Gate::ChangeGateState() {
+	if(this->gateState == GATE_OPENING) {
+		this->gateState = GATE_CLOSING;
+	}
+	else if(this->gateState == GATE_CLOSING) {
+		this->gateState = GATE_OPENING;
+	}
+	else if(this->gateState == GATE_CLOSED) {
+		this->gateState = GATE_OPENING;
+	}
+	else if(this->gateState == GATE_OPEN) {
+		this->gateState = GATE_CLOSING;
+	}
 }
