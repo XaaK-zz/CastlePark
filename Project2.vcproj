@@ -190,6 +190,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Flag.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Gate.cpp"
 				>
 			</File>
@@ -206,11 +210,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ManagedTexture.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Tower.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\Track.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Tree.cpp"
 				>
 			</File>
 			<File
@@ -240,6 +252,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Flag.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Gate.h"
 				>
 			</File>
@@ -256,11 +272,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ManagedTexture.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Tower.h"
 				>
 			</File>
 			<File
 				RelativePath=".\Track.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Tree.h"
 				>
 			</File>
 			<File

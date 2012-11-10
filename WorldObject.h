@@ -4,6 +4,8 @@
 #include "libtarga.h"
 #include <stdio.h>
 #include <GL/glu.h>
+#include "ManagedTexture.h"
+#include <vector>
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -13,6 +15,8 @@
 #define EAST 3
 #define WEST 4
 
+using namespace std;
+
 class WorldObject
 {
 protected:
@@ -20,6 +24,7 @@ protected:
     bool    	    initialized;    // Whether or not we have been initialized.
     float posX, posY, posZ;
 	float scaleX, scaleY, scaleZ;
+	vector<ManagedTexture*> *textureList;
 
 public:
 	WorldObject(void);

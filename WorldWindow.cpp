@@ -15,6 +15,10 @@
 #include <iostream>
 #include "Tower.h"
 #include "Gate.h"
+#include "Tree.h"
+#include "Flag.h"
+#include <stdlib.h>
+#include <time.h>
 
 const double WorldWindow::FOV_X = 45.0;
 
@@ -22,6 +26,8 @@ WorldWindow::WorldWindow(int x, int y, int width, int height, char *label)
 	: Fl_Gl_Window(x, y, width, height, label)
 {
     button = -1;
+
+	srand ( time(NULL) );
 
     // Initial viewing parameters.
     phi = 45.0f;
@@ -158,6 +164,47 @@ WorldWindow::draw(void)
 		gate = new Gate(3.8f,-50.0f,0.5f,7.5f,0.7f,5.0f,-7.5f/2.0f,-1);
 		gate->Initialize();
 		worldObjects->push_back(gate);
+
+		int numTrees = 25;
+		vector<vector<float>> *treeArray = new vector<vector<float>>();
+		for(int treeNum=0;treeNum<numTrees;treeNum++) {
+			vector<float> treeSettings;// = {37.5f + (rand() % 12) - 25.0f,
+									  //37.5f + (rand() % 12) - 25.0f,
+									  //0.0f,1.0f,1.0f,1.0f,0.5f,2.0f,3.0f,1.0f};
+			treeSettings.push_back(37.5f + (rand() % 25) - 25.0f);
+			treeSettings.push_back(37.5f + (rand() % 25) - 25.0f);
+			treeSettings.push_back(0.0f);
+			treeSettings.push_back(1.0f);
+			treeSettings.push_back(1.0f);
+			treeSettings.push_back(1.0f);
+			float widthTemp = ((float)(rand() % 100)+1)/100.0f;
+			treeSettings.push_back(widthTemp);//width
+			treeSettings.push_back((rand() % 8)+1);//height
+			treeSettings.push_back((rand() % 5)+1);//top
+			treeSettings.push_back(widthTemp + (rand() % 3)+1);//tree height
+
+			//treeSettings[0] = 37.5f + (rand() % 12) - 25.0f;
+			//treeSettings[1] = 37.5f + (rand() % 12) - 25.0f;
+			treeArray->push_back(treeSettings);
+		}
+
+		//Trees
+		for(int x=0;x<numTrees;x++) {
+			//Tree *tree = new Tree(25.0f,25.0f,0.0f,1.0f,1.0f,1.0f,0.5f,2.0f,3.0f,1.0f);
+			Tree *tree = new Tree(treeArray->at(x).at(0),treeArray->at(x).at(1),treeArray->at(x).at(2),treeArray->at(x).at(3),treeArray->at(x).at(4),
+								  treeArray->at(x).at(5),treeArray->at(x).at(6),treeArray->at(x).at(7),treeArray->at(x).at(8),treeArray->at(x).at(9));
+
+			tree->Initialize();
+			worldObjects->push_back(tree);
+		}
+
+		delete treeArray;
+		
+	
+		Flag *flag = new Flag(0.0f,0.0f,0.0f,1.0f,1.0f,1.0f,1.0f);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
     }
 
     // Stuff out here relies on a coordinate system or must be done on every

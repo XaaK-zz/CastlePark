@@ -2,13 +2,14 @@
 
 #include <Fl/gl.h>
 #include "WorldObject.h"
-
+#include "ManagedTexture.h"
 
 class Wall : public WorldObject {
 
 protected:
-	GLuint  texture_obj;    // The object for the grass texture.
+	//GLuint  texture_obj;    // The object for the grass texture.
     int crenellationDirection;
+	//ManagedTexture *wallTexture;
 
 public:
 	Wall(void);

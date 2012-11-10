@@ -14,6 +14,12 @@ WorldObject::WorldObject(void) {
 WorldObject::~WorldObject(void) {
 	if (initialized){
 		glDeleteLists(displayList, 1);
+		
+		for(std::vector<ManagedTexture*>::iterator it = this->textureList->begin(); it != this->textureList->end(); ++it) {
+			delete (*it);
+		}
+
+		delete this->textureList;
     }
 }
 
@@ -26,6 +32,8 @@ WorldObject::WorldObject(float posX, float posY, float posZ, float scaleX, float
 	this->scaleZ = scaleZ;
 
 	this->initialized = false;
+
+	this->textureList = new vector<ManagedTexture*>();
 }
 	
 bool WorldObject::Initialize(void) {
@@ -41,6 +49,17 @@ void WorldObject::Update(float) {
 
 void WorldObject::Draw(void) {
 
+	if (!initialized) {
+		return;
+	}
+
+    glPushMatrix();
+	glTranslatef (this->posX, this->posY, this->posZ); /*  move position  */
+	glScalef(this->scaleX,this->scaleY,this->scaleZ);
+    // Draw the wall
+	glCallList(this->displayList);
+
+	glPopMatrix();
 }
 
 float* WorldObject::computeNormal(float trianglePt1X,float trianglePt1Y,float trianglePt1Z,
