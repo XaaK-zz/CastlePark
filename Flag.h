@@ -6,10 +6,12 @@ class Flag :
 {
 protected:
 	float poleHeight;
+	float flagHeight;
+	float flagLength;
 
 public:
 	Flag(void);
-	Flag(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, float height);
+	Flag(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, float height, float flagHeight, float flagLength);
 	~Flag(void);
 
 	bool Initialize(void);	// Gets everything set up for drawing.

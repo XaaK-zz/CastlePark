@@ -164,7 +164,7 @@ WorldWindow::draw(void)
 		gate = new Gate(3.8f,-50.0f,0.5f,7.5f,0.7f,5.0f,-7.5f/2.0f,-1);
 		gate->Initialize();
 		worldObjects->push_back(gate);
-
+/*
 		int numTrees = 25;
 		vector<vector<float>> *treeArray = new vector<vector<float>>();
 		for(int treeNum=0;treeNum<numTrees;treeNum++) {
@@ -199,9 +199,30 @@ WorldWindow::draw(void)
 		}
 
 		delete treeArray;
-		
+		*/
 	
-		Flag *flag = new Flag(0.0f,0.0f,0.0f,1.0f,1.0f,1.0f,1.0f);
+		Flag *flag = new Flag(50.0f,50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(-50.0f,50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(50.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(-50.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		//big flags
+		flag = new Flag(10.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,3.0f,1.0f,1.0f);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(-10.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,3.0f,1.0f,1.0f);
 		flag->Initialize();
 		worldObjects->push_back(flag);
 
