@@ -21,13 +21,10 @@ Wall::~Wall(void)
 bool Wall::Initialize(void) {
 
 	this->textureMgr->LoadTexture("MainWall","wall.tga");
-	//ManagedTexture *wallTexture = new ManagedTexture("wall.tga");
-	//this->textureList->push_back(wallTexture);
-
+	
 	this->displayList = glGenLists(1);
     glNewList(this->displayList, GL_COMPILE);
 	glEnable(GL_TEXTURE_2D);
-	//wallTexture->ActivateTexture();
 	this->textureMgr->ActivateTexture("MainWall");
 
     glColor3f(1.0, 1.0, 1.0);

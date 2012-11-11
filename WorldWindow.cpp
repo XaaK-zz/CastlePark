@@ -17,6 +17,7 @@
 #include "Gate.h"
 #include "Tree.h"
 #include "Flag.h"
+#include "Bench.h"
 #include <stdlib.h>
 #include <time.h>
 
@@ -227,6 +228,11 @@ WorldWindow::draw(void)
 		flag = new Flag(-10.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,3.0f,1.0f,1.0f,this->textureManager);
 		flag->Initialize();
 		worldObjects->push_back(flag);
+
+		//bench
+		Bench *bench = new Bench(0.0f,0.0f,0.0f,1.0f,0.5f,0.5f,this->textureManager);
+		bench->Initialize();
+		worldObjects->push_back(bench);
 
     }
 
