@@ -13,7 +13,7 @@ protected:
 public:
 	Tree(void);
 	Tree(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ,
-		 float tWidth, float tHeight, float bTop, float bWidth);
+		 float tWidth, float tHeight, float bTop, float bWidth, TextureManager *textureMgr);
 	
 	virtual ~Tree(void);
 

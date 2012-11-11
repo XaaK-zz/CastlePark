@@ -4,8 +4,8 @@ Tree::Tree(void)
 {
 }
 
-Tree::Tree(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, float tWidth, float tHeight, float bTop, float bWidth) 
-: WorldObject(posX, posY, posZ, scaleX, scaleY, scaleZ) {
+Tree::Tree(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, float tWidth, float tHeight, float bTop, float bWidth, TextureManager *textureMgr) 
+: WorldObject(posX, posY, posZ, scaleX, scaleY, scaleZ, textureMgr) {
 		this->trunkHeight = tHeight;
 	this->trunkWidth = tWidth;
 	this->topOfTree = bTop;
@@ -19,15 +19,18 @@ Tree::~Tree(void)
 
 bool Tree::Initialize(void) {
 
-	ManagedTexture *texture = new ManagedTexture("bark1.tga");
-	this->textureList->push_back(texture);
-	texture = new ManagedTexture("leaves.tga");
-	this->textureList->push_back(texture);
+	this->textureMgr->LoadTexture("Bark","bark1.tga");
+	this->textureMgr->LoadTexture("Leaves","leaves.tga");
+	//ManagedTexture *texture = new ManagedTexture("bark1.tga");
+	//this->textureList->push_back(texture);
+	//texture = new ManagedTexture("leaves.tga");
+	//this->textureList->push_back(texture);
 
 	this->displayList = glGenLists(1);
     glNewList(this->displayList, GL_COMPILE);
 	glEnable(GL_TEXTURE_2D);
-	this->textureList->at(0)->ActivateTexture();
+	//this->textureList->at(0)->ActivateTexture();
+	this->textureMgr->ActivateTexture("Bark");
 	glColor3f(1.0, 1.0, 1.0);
 	
 	float angle = 0.0f;
@@ -56,7 +59,8 @@ bool Tree::Initialize(void) {
 
 
 	//create top of tree
-	this->textureList->at(1)->ActivateTexture();
+	//this->textureList->at(1)->ActivateTexture();
+	this->textureMgr->ActivateTexture("Leaves");
 
 	glBegin(GL_TRIANGLES);
 	

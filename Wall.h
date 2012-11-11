@@ -9,11 +9,11 @@ class Wall : public WorldObject {
 protected:
 	//GLuint  texture_obj;    // The object for the grass texture.
     int crenellationDirection;
-	//ManagedTexture *wallTexture;
+	
 
 public:
 	Wall(void);
-	Wall(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, int credDir);
+	Wall(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, int credDir, TextureManager *textureMgr);
 	~Wall(void);
 
 	bool Initialize(void);	// Gets everything set up for drawing.

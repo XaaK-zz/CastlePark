@@ -39,6 +39,7 @@ WorldWindow::WorldWindow(int x, int y, int width, int height, char *label)
 	worldObjects = new vector<WorldObject*>();
 
 	this->signalGates = false;
+	this->textureManager = new TextureManager();
 }
 
 // Destructor
@@ -49,6 +50,7 @@ WorldWindow::~WorldWindow(void)
 	}
 	//this->worldObjects->clear();
 	delete worldObjects;
+	delete this->textureManager;
 }
 
 
@@ -110,61 +112,61 @@ WorldWindow::draw(void)
 		// Initialize all the objects.
 		ground.Initialize();
 		traintrack.Initialize();
-		Wall *wall = new Wall(50.0f,0.0f,0.0f,3.0f,100.0f,6.0f,EAST);
+		Wall *wall = new Wall(50.0f,0.0f,0.0f,3.0f,100.0f,6.0f,EAST,this->textureManager);
 		wall->Initialize();
 		worldObjects->push_back(wall);
 
-		wall = new Wall(-50.0f,0.0f,0.0f,3.0f,100.0f,6.0f,WEST);
+		wall = new Wall(-50.0f,0.0f,0.0f,3.0f,100.0f,6.0f,WEST,this->textureManager);
 		wall->Initialize();
 		worldObjects->push_back(wall);
 
-		wall = new Wall(0.0f,50.0f,0.0f,100.0f,3.0f,6.0f,NORTH);
+		wall = new Wall(0.0f,50.0f,0.0f,100.0f,3.0f,6.0f,NORTH,this->textureManager);
 		wall->Initialize();
 		worldObjects->push_back(wall);
 
-		wall = new Wall(30.0f,-50.0f,0.0f,40.0f,3.0f,6.0f,SOUTH);
+		wall = new Wall(30.0f,-50.0f,0.0f,40.0f,3.0f,6.0f,SOUTH,this->textureManager);
 		wall->Initialize();
 		worldObjects->push_back(wall);
 
-		wall = new Wall(-30.0f,-50.0f,0.0f,40.0f,3.0f,6.0f,SOUTH);
+		wall = new Wall(-30.0f,-50.0f,0.0f,40.0f,3.0f,6.0f,SOUTH,this->textureManager);
 		wall->Initialize();
 		worldObjects->push_back(wall);
 
 		//Corner Towers/////////////////////////////////
-		Tower *tower = new Tower(50.0f,50.0f,0,5.0f,5.0f,12.0f,20);
+		Tower *tower = new Tower(50.0f,50.0f,0,5.0f,5.0f,12.0f,20,this->textureManager);
 		tower->Initialize();
 		worldObjects->push_back(tower);
 
-		tower = new Tower(-50.0f,50.0f,0,5.0f,5.0f,12.0f,20);
+		tower = new Tower(-50.0f,50.0f,0,5.0f,5.0f,12.0f,20,this->textureManager);
 		tower->Initialize();
 		worldObjects->push_back(tower);
 
-		tower = new Tower(50.0f,-50.0f,0,5.0f,5.0f,12.0f,20);
+		tower = new Tower(50.0f,-50.0f,0,5.0f,5.0f,12.0f,20,this->textureManager);
 		tower->Initialize();
 		worldObjects->push_back(tower);
 
-		tower = new Tower(-50.0f,-50.0f,0,5.0f,5.0f,12.0f,20);
+		tower = new Tower(-50.0f,-50.0f,0,5.0f,5.0f,12.0f,20,this->textureManager);
 		tower->Initialize();
 		worldObjects->push_back(tower);
 		/////////////////////////////////////////////
 
 		//Gate
-		tower = new Tower(10.0f,-50.0f,0,5.0f,5.0f,12.0f,20);
+		tower = new Tower(10.0f,-50.0f,0,5.0f,5.0f,12.0f,20,this->textureManager);
 		tower->Initialize();
 		worldObjects->push_back(tower);
 
-		tower = new Tower(-10.0f,-50.0f,0,5.0f,5.0f,12.0f,20);
+		tower = new Tower(-10.0f,-50.0f,0,5.0f,5.0f,12.0f,20,this->textureManager);
 		tower->Initialize();
 		worldObjects->push_back(tower);
 
-		Gate *gate = new Gate(-3.8f,-50.0f,0.5f,7.5f,0.7f,5.0f,7.5f/2.0f,1);
+		Gate *gate = new Gate(-3.8f,-50.0f,0.5f,7.5f,0.7f,5.0f,7.5f/2.0f,1,this->textureManager);
 		gate->Initialize();
 		worldObjects->push_back(gate);
 
-		gate = new Gate(3.8f,-50.0f,0.5f,7.5f,0.7f,5.0f,-7.5f/2.0f,-1);
+		gate = new Gate(3.8f,-50.0f,0.5f,7.5f,0.7f,5.0f,-7.5f/2.0f,-1,this->textureManager);
 		gate->Initialize();
 		worldObjects->push_back(gate);
-/*
+
 		int numTrees = 25;
 		vector<vector<float>> *treeArray = new vector<vector<float>>();
 		for(int treeNum=0;treeNum<numTrees;treeNum++) {
@@ -192,37 +194,37 @@ WorldWindow::draw(void)
 		for(int x=0;x<numTrees;x++) {
 			//Tree *tree = new Tree(25.0f,25.0f,0.0f,1.0f,1.0f,1.0f,0.5f,2.0f,3.0f,1.0f);
 			Tree *tree = new Tree(treeArray->at(x).at(0),treeArray->at(x).at(1),treeArray->at(x).at(2),treeArray->at(x).at(3),treeArray->at(x).at(4),
-								  treeArray->at(x).at(5),treeArray->at(x).at(6),treeArray->at(x).at(7),treeArray->at(x).at(8),treeArray->at(x).at(9));
+								  treeArray->at(x).at(5),treeArray->at(x).at(6),treeArray->at(x).at(7),treeArray->at(x).at(8),treeArray->at(x).at(9),this->textureManager);
 
 			tree->Initialize();
 			worldObjects->push_back(tree);
 		}
 
 		delete treeArray;
-		*/
+		
 	
-		Flag *flag = new Flag(50.0f,50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f);
+		Flag *flag = new Flag(50.0f,50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f,this->textureManager);
 		flag->Initialize();
 		worldObjects->push_back(flag);
 
-		flag = new Flag(-50.0f,50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f);
+		flag = new Flag(-50.0f,50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f,this->textureManager);
 		flag->Initialize();
 		worldObjects->push_back(flag);
 
-		flag = new Flag(50.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f);
+		flag = new Flag(50.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f,this->textureManager);
 		flag->Initialize();
 		worldObjects->push_back(flag);
 
-		flag = new Flag(-50.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f);
+		flag = new Flag(-50.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f,this->textureManager);
 		flag->Initialize();
 		worldObjects->push_back(flag);
 
 		//big flags
-		flag = new Flag(10.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,3.0f,1.0f,1.0f);
+		flag = new Flag(10.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,3.0f,1.0f,1.0f,this->textureManager);
 		flag->Initialize();
 		worldObjects->push_back(flag);
 
-		flag = new Flag(-10.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,3.0f,1.0f,1.0f);
+		flag = new Flag(-10.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,3.0f,1.0f,1.0f,this->textureManager);
 		flag->Initialize();
 		worldObjects->push_back(flag);
 

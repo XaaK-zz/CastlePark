@@ -5,8 +5,8 @@ Flag::Flag(void)
 {
 }
 
-Flag::Flag(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, float height, float fheight, float fLength)
-: WorldObject(posX, posY, posZ, scaleX, scaleY, scaleZ) {
+Flag::Flag(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, float height, float fheight, float fLength, TextureManager *textureMgr)
+: WorldObject(posX, posY, posZ, scaleX, scaleY, scaleZ, textureMgr) {
 	this->poleHeight = height;
 	this->flagHeight = fheight;
 	this->flagLength = fLength;

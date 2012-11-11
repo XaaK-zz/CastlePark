@@ -16,7 +16,7 @@
 #include "Ground.h"
 #include "Track.h"
 #include "Wall.h"
-
+#include "TextureManager.h"
 #include <vector>
 
 using namespace std;
@@ -71,6 +71,7 @@ class WorldWindow : public Fl_Gl_Window {
 
 protected:
 	bool signalGates;
+	TextureManager *textureManager;
 };
 
 

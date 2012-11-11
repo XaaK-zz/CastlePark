@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <GL/glu.h>
 #include "ManagedTexture.h"
+#include "TextureManager.h"
 #include <vector>
 
 #define _USE_MATH_DEFINES
@@ -24,11 +25,12 @@ protected:
     bool    	    initialized;    // Whether or not we have been initialized.
     float posX, posY, posZ;
 	float scaleX, scaleY, scaleZ;
-	vector<ManagedTexture*> *textureList;
+	//vector<ManagedTexture*> *textureList;
+	TextureManager *textureMgr;
 
 public:
 	WorldObject(void);
-	WorldObject(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ);
+	WorldObject(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ,TextureManager *textureMgr);
 	~WorldObject(void);
 	
     virtual bool Initialize(void);	// Gets everything set up for drawing.

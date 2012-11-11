@@ -14,16 +14,17 @@ WorldObject::WorldObject(void) {
 WorldObject::~WorldObject(void) {
 	if (initialized){
 		glDeleteLists(displayList, 1);
-		
+		/*
 		for(std::vector<ManagedTexture*>::iterator it = this->textureList->begin(); it != this->textureList->end(); ++it) {
 			delete (*it);
 		}
 
 		delete this->textureList;
+		*/
     }
 }
 
-WorldObject::WorldObject(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ) {
+WorldObject::WorldObject(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, TextureManager *textureMgr) {
 	this->posX = posX;
 	this->posY = posY;
 	this->posZ = posZ;
@@ -33,7 +34,8 @@ WorldObject::WorldObject(float posX, float posY, float posZ, float scaleX, float
 
 	this->initialized = false;
 
-	this->textureList = new vector<ManagedTexture*>();
+	//this->textureList = new vector<ManagedTexture*>();
+	this->textureMgr = textureMgr;
 }
 	
 bool WorldObject::Initialize(void) {

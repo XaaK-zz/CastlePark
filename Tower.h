@@ -13,7 +13,7 @@ protected:
 
 public:
 	Tower(void);
-	Tower(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ,int roofTri);
+	Tower(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ,int roofTri, TextureManager *textureMgr);
 	
 	~Tower(void);
 

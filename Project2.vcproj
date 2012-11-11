@@ -214,6 +214,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TextureManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Tower.cpp"
 				>
 			</File>
@@ -273,6 +277,10 @@
 			</File>
 			<File
 				RelativePath=".\ManagedTexture.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TextureManager.h"
 				>
 			</File>
 			<File

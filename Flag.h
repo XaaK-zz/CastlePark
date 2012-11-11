@@ -11,7 +11,7 @@ protected:
 
 public:
 	Flag(void);
-	Flag(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, float height, float flagHeight, float flagLength);
+	Flag(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, float height, float flagHeight, float flagLength,TextureManager *textureMgr);
 	~Flag(void);
 
 	bool Initialize(void);	// Gets everything set up for drawing.
