@@ -32,13 +32,14 @@ WorldWindow::WorldWindow(int x, int y, int width, int height, char *label)
 
     // Initial viewing parameters.
     phi = 45.0f;
-    theta = 0.0f;
+    theta = -90.0f;
     dist = 100.0f;
     x_at = 0.0f;
-    y_at = 0.0f;
+    y_at = -50.0f;
 
 	worldObjects = new vector<WorldObject*>();
-
+	
+	this->viewingMode = VIEWMODE_NORMAL;
 	this->signalGates = false;
 	this->textureManager = new TextureManager();
 }
@@ -229,11 +230,66 @@ WorldWindow::draw(void)
 		flag->Initialize();
 		worldObjects->push_back(flag);
 
-		//bench
-		Bench *bench = new Bench(0.0f,0.0f,0.0f,1.0f,0.5f,0.5f,this->textureManager);
+		/////////////////////////////////////////////////////////////////////////////////////////
+		//benches
+		//First - "Stage"
+		Bench *bench = new Bench(40.0f,-40.0f,-0.8f,15.0f,15.0f,1.0f,0.0f,1, this->textureManager);
+		bench->HideLegs();
 		bench->Initialize();
 		worldObjects->push_back(bench);
 
+		bench = new Bench(31.0f,-31.0f,0.0f,1.5f,0.5f,0.5f,45.0f,1, this->textureManager);
+		bench->Initialize();
+		worldObjects->push_back(bench);
+
+		bench = new Bench(33.0f,-30.0f,0.0f,1.0f,0.5f,0.5f,-5.0f,2, this->textureManager);
+		bench->Initialize();
+		worldObjects->push_back(bench);
+
+		bench = new Bench(36.0f,-30.0f,0.0f,2.0f,0.5f,0.5f,3.0f,2, this->textureManager);
+		bench->Initialize();
+		worldObjects->push_back(bench);
+
+		bench = new Bench(39.0f,-30.0f,0.0f,1.0f,0.5f,0.5f,0.0f,1, this->textureManager);
+		bench->Initialize();
+		worldObjects->push_back(bench);
+
+		bench = new Bench(42.0f,-30.0f,0.0f,1.2f,0.5f,0.5f,2.0f,1, this->textureManager);
+		bench->Initialize();
+		worldObjects->push_back(bench);
+
+		bench = new Bench(45.0f,-30.0f,0.0f,2.0f,0.5f,0.5f,1.0f,2, this->textureManager);
+		bench->Initialize();
+		worldObjects->push_back(bench);
+
+		bench = new Bench(30.0f,-33.0f,0.0f,1.0f,0.5f,0.5f,90.0f,1, this->textureManager);
+		bench->Initialize();
+		worldObjects->push_back(bench);
+
+		bench = new Bench(30.0f,-35.0f,0.0f,1.5f,0.5f,0.5f,92.0f,2, this->textureManager);
+		bench->Initialize();
+		worldObjects->push_back(bench);
+
+		bench = new Bench(30.0f,-38.0f,0.0f,2.5f,0.5f,0.5f,88.0f,1, this->textureManager);
+		bench->Initialize();
+		worldObjects->push_back(bench);
+
+		bench = new Bench(30.0f,-41.0f,0.0f,1.0f,0.5f,0.5f,90.0f,1, this->textureManager);
+		bench->Initialize();
+		worldObjects->push_back(bench);
+
+		bench = new Bench(30.0f,-43.0f,0.0f,1.0f,0.5f,0.5f,92.0f,2, this->textureManager);
+		bench->Initialize();
+		worldObjects->push_back(bench);
+
+		bench = new Bench(30.0f,-45.0f,0.0f,1.5f,0.5f,0.5f,89.0f,2, this->textureManager);
+		bench->Initialize();
+		worldObjects->push_back(bench);
+
+		bench = new Bench(30.0f,-47.0f,0.0f,1.0f,0.5f,0.5f,90.0f,1, this->textureManager);
+		bench->Initialize();
+		worldObjects->push_back(bench);
+		//////////////////////////////////////////////////////////////////////////////////
     }
 
     // Stuff out here relies on a coordinate system or must be done on every
@@ -301,16 +357,29 @@ WorldWindow::Drag(float dt)
 	// appears to move under the viewer.
 	float	x_axis[2];
 	float	y_axis[2];
+	cout << "Right Mouse Drag: x_at: " << x_at << " y_at: " << y_at
+		 << " theta: " << theta << endl;
 
 	x_axis[0] = -(float)sin(theta * M_PI / 180.0);
 	x_axis[1] = (float)cos(theta * M_PI / 180.0);
 	y_axis[0] = x_axis[1];
 	y_axis[1] = -x_axis[0];
 
+	cout << "	x_axis[0]: " << x_axis[0] << " x_axis[1]: " << x_axis[1] << endl 
+		 << "	y_axis[0]: " << y_axis[0] << " y_axis[1]: " << y_axis[1] << endl; 
+
+	cout << "	dx: " << dx << " dy: " << dy << " x_at_down: " << x_at_down 
+		 << "	y_at_down: " << y_at_down << endl;
+
+	cout << "	x_axis[0] * dx / (float)w(): " <<  x_axis[0] * dx / (float)w() << endl
+		<< "	y_axis[0] * dy / (float)h(): " << y_axis[0] * dy / (float)h() << endl; 
+
 	x_at = x_at_down + 100.0f * ( x_axis[0] * dx / (float)w()
 				    + y_axis[0] * dy / (float)h() );
 	y_at = y_at_down + 100.0f * ( x_axis[1] * dx / (float)w()
 				    + y_axis[1] * dy / (float)h() );
+
+
 	} break;
       default:;
     }
@@ -374,10 +443,41 @@ WorldWindow::handle(int event)
 	  case FL_KEYUP:
 		  if(Fl::event_key() == (int)'o')
 			  signalGates = true;
+		  if(Fl::event_key() == (int)'v') {
+			  this->viewingMode = VIEWMODE_FPS;
+		  }
+		  if(Fl::event_key() == (int)'w') {
+			  this->MoveForward();
+		  }
+			  
     }
 
     // Pass any other event types on the superclass.
     return Fl_Gl_Window::handle(event);
+}
+
+void WorldWindow::MoveForward() {
+
+	cout << "MoveForward. theta: " << theta << endl;
+
+	float	x_axis[2];
+	float	y_axis[2];
+	float dx = 0.0f;
+	float dy = -5.0f;
+	float walkDistance = -5.0f;
+
+	x_axis[0] = -(float)sin(theta * M_PI / 180.0);
+	x_axis[1] = (float)cos(theta * M_PI / 180.0);
+	y_axis[0] = x_axis[1];
+	y_axis[1] = -x_axis[0];
+
+	float moveX = walkDistance * (float)cos(theta * M_PI / 180.0);
+	float moveY = walkDistance * (float)sin(theta * M_PI / 180.0);
+
+	x_at += moveX;
+	y_at += moveY;
+	//x_at = x_at + 100.0f * ( x_axis[0] * dx / (float)w() + y_axis[0] * dy / (float)h() );
+	//y_at = y_at + 100.0f * ( x_axis[1] * dx / (float)w() + y_axis[1] * dy / (float)h() );
 }
 
 

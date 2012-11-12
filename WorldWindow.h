@@ -21,6 +21,8 @@
 
 using namespace std;
 
+#define VIEWMODE_NORMAL 1
+#define VIEWMODE_FPS	2
 
 // Subclass the Fl_Gl_Window because we want to draw OpenGL in here.
 class WorldWindow : public Fl_Gl_Window {
@@ -72,6 +74,9 @@ class WorldWindow : public Fl_Gl_Window {
 protected:
 	bool signalGates;
 	TextureManager *textureManager;
+	int viewingMode;
+
+	void MoveForward();
 };
 
 

@@ -127,36 +127,23 @@ bool Tower::Initialize(void) {
 		float *temp = computeNormal(0,0,0.5f,cos(angle),sin(angle),0.0f,cos(nextAngle),sin(nextAngle),0.0f);
 		glNormal3f(temp[0], temp[1],temp[2]);
 
-		glTexCoord2f(0.5f, 5.0f);
-		glVertex3f(0,0,0.5f);
-		glTexCoord2f(1.0f, 1.0f);
-		glVertex3f(cos(angle),sin(angle),0.0f);
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex3f(cos(nextAngle),sin(nextAngle),0.0f);
-		delete [] temp;
-	}
-	glEnd();
-
-/*
-	glBegin(GL_TRIANGLE_FAN);
-	glTexCoord2f(0.5f, 5.0f);
-	glVertex3f(0,0,0.5f);
-	for(int i=0;i<10;i++) {
+		glTexCoord2f(0.5f, 5.0f);	glVertex3f(0,0,0.5f);
+		glTexCoord2f(1.0f, 1.0f);	glVertex3f(cos(angle),sin(angle),0.0f);
+		glTexCoord2f(0.0f, 0.0f);	glVertex3f(cos(nextAngle),sin(nextAngle),0.0f);
 		
-		angle = i*2*M_PI/10;
+		temp = computeNormal(0,0,0.5f,
+					cos(angle),sin(angle),0.5f,
+					cos(nextAngle),sin(nextAngle),0.5f);
+		glNormal3f(-temp[0], -temp[1],-temp[2]);
 
-		float *temp = computeNormal(0,0,0.5f,cos(angle),sin(angle),0.0f,cos((i+1)*2*M_PI/10),sin((i+1)*2*M_PI/10),0.0f);
-		glNormal3f(temp[0], temp[1],temp[2]);
-		glTexCoord2f(cos(angle), sin(angle));
-		glVertex3f(cos(angle),sin(angle),0.0f);
+		glTexCoord2f(0.5f, 5.0f);	glVertex3f(0,0,0);
+		glTexCoord2f(0.0f, 0.0f);	glVertex3f(cos(nextAngle),sin(nextAngle),0);
+		glTexCoord2f(1.0f, 1.0f);	glVertex3f(cos(angle),sin(angle),0);
+		
 		delete [] temp;
-		//angle = i*2*M_PI/360;
-		//glVertex3f(cos(angle),sin(angle),0.5f);
 	}
-	glTexCoord2f(cos(0.0f), sin(0.0f));
-	glVertex3f(cos(0.0f),sin(0.0f),0.0f);
 	glEnd();
-*/
+
 	glPopMatrix();
 
 glDisable(GL_TEXTURE_2D);
