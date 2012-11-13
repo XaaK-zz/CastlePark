@@ -37,11 +37,20 @@ WorldWindow::WorldWindow(int x, int y, int width, int height, char *label)
     x_at = 0.0f;
     y_at = 00.0f;
 
+	fps_phi = 0;
+	fps_theta = -90.0;
+	fps_dist = 5.0f;
+	fps_x_at = 0.0f;
+	fps_y_at = -50.0f;
+
 	worldObjects = new vector<WorldObject*>();
 	
 	this->viewingMode = VIEWMODE_NORMAL;
 	this->signalGates = false;
 	this->textureManager = new TextureManager();
+
+	this->fixedCamera = new FixedCamera();
+	this->fixedCamera->AddCameraPos(0.0f,0.0f,13.0f,0.0f,135.0f);
 }
 
 // Destructor
@@ -53,6 +62,7 @@ WorldWindow::~WorldWindow(void)
 	//this->worldObjects->clear();
 	delete worldObjects;
 	delete this->textureManager;
+	delete this->fixedCamera;
 }
 
 
@@ -231,13 +241,65 @@ WorldWindow::draw(void)
 		worldObjects->push_back(flag);
 
 		//stage flags
-		flag = new Flag(37.0f,-46.0f,0.0f,1.0f,1.0f,1.0f,3.0f,2.0f,1.0f,0.7f, 0.0f, 0.7f, 2, 15.0f,this->textureManager);
+		flag = new Flag(33.0f,-47.0f,0.0f,1.0f,1.0f,1.0f,3.0f,2.0f,1.0f,0.69f, 0.13f, 0.13f, 2, 35.0f,this->textureManager);
 		flag->Initialize();
 		worldObjects->push_back(flag);
 
-		//flag = new Flag(40.0f,-48.0f,0.0f,1.0f,1.0f,1.0f,3.0f,2.0f,1.0f,0.7f, 0.0f, 0.7f, 2, 0.0f,this->textureManager);
-		//flag->Initialize();
-		//worldObjects->push_back(flag);
+		flag = new Flag(35.0f,-47.0f,0.0f,1.0f,1.0f,1.2f,3.0f,2.0f,1.0f,0.69f, 0.13f, 0.13f, 2, 35.0f,this->textureManager);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(37.0f,-47.0f,0.0f,1.0f,1.0f,1.4f,3.0f,2.0f,1.0f,0.69f, 0.13f, 0.13f, 2, 35.0f,this->textureManager);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(39.0f,-47.0f,0.0f,1.0f,1.0f,1.6f,3.0f,2.0f,1.0f,0.69f, 0.13f, 0.13f, 2, 35.0f,this->textureManager);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(41.0f,-47.0f,0.0f,1.0f,1.0f,1.8f,3.0f,2.0f,1.0f,0.69f, 0.13f, 0.13f, 2, 35.0f,this->textureManager);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(43.0f,-47.0f,0.0f,1.0f,1.0f,2.0f,3.0f,2.0f,1.0f,0.69f, 0.13f, 0.13f, 2, 35.0f,this->textureManager);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(45.0f,-47.0f,0.0f,1.0f,1.0f,2.2f,3.0f,2.0f,1.0f,0.69f, 0.13f, 0.13f, 2, 35.0f,this->textureManager);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(47.0f,-47.0f,0.0f,1.0f,1.0f,2.4f,3.0f,2.0f,1.0f,0.69f, 0.13f, 0.13f, 2, 35.0f,this->textureManager);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(47.0f,-33.0f,0.0f,1.0f,1.0f,1.0f,3.0f,2.0f,1.0f,0.69f, 0.13f, 0.13f, 2, 35.0f,this->textureManager);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(47.0f,-35.0f,0.0f,1.0f,1.0f,1.2f,3.0f,2.0f,1.0f,0.69f, 0.13f, 0.13f, 2, 35.0f,this->textureManager);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(47.0f,-37.0f,0.0f,1.0f,1.0f,1.4f,3.0f,2.0f,1.0f,0.69f, 0.13f, 0.13f, 2, 35.0f,this->textureManager);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(47.0f,-39.0f,0.0f,1.0f,1.0f,1.6f,3.0f,2.0f,1.0f,0.69f, 0.13f, 0.13f, 2, 35.0f,this->textureManager);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(47.0f,-41.0f,0.0f,1.0f,1.0f,1.8f,3.0f,2.0f,1.0f,0.69f, 0.13f, 0.13f, 2, 35.0f,this->textureManager);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(47.0f,-43.0f,0.0f,1.0f,1.0f,2.0f,3.0f,2.0f,1.0f,0.69f, 0.13f, 0.13f, 2, 35.0f,this->textureManager);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		flag = new Flag(47.0f,-45.0f,0.0f,1.0f,1.0f,2.2f,3.0f,2.0f,1.0f,0.69f, 0.13f, 0.13f, 2, 35.0f,this->textureManager);
+		flag->Initialize();
+		worldObjects->push_back(flag);
 
 		/////////////////////////////////////////////////////////////////////////////////////////
 		//benches
@@ -310,12 +372,48 @@ WorldWindow::draw(void)
     // Set up the viewing transformation. The viewer is at a distance
     // dist from (x_at, y_ay, 2.0) in the direction (theta, phi) defined
     // by two angles. They are looking at (x_at, y_ay, 2.0) and z is up.
-    eye[0] = x_at + dist * cos(theta * M_PI / 180.0) * cos(phi * M_PI / 180.0);
-    eye[1] = y_at + dist * sin(theta * M_PI / 180.0) * cos(phi * M_PI / 180.0);
-    eye[2] = 2.0 + dist * sin(phi * M_PI / 180.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(eye[0], eye[1], eye[2], x_at, y_at, 2.0, 0.0, 0.0, 1.0);
+	if(this->viewingMode == VIEWMODE_NORMAL) {
+		eye[0] = x_at + dist * cos(theta * M_PI / 180.0) * cos(phi * M_PI / 180.0);
+		eye[1] = y_at + dist * sin(theta * M_PI / 180.0) * cos(phi * M_PI / 180.0);
+		eye[2] = 2.0 + dist * sin(phi * M_PI / 180.0);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		gluLookAt(eye[0], eye[1], eye[2], x_at, y_at, 2.0, 0.0, 0.0, 1.0);
+	}
+	else if(this->viewingMode == VIEWMODE_FPS) {
+		
+		fps_phi = 90.0f - (90.0f * (((float)h()-fps_mouseY)/((float)h()/2.0f)));
+		fps_theta = 360.0f - (360.0f * (fps_mouseX/((float)w()/2.0f)));
+
+		while ( fps_theta >= 360.0f )
+			fps_theta -= 360.0f;
+		while ( fps_theta < 0.0f )
+			fps_theta += 360.0f;
+
+		if ( fps_phi > 55.0f )
+			fps_phi = 55.0f;
+		if ( fps_phi < -35.0f )
+			fps_phi = -35.0f;
+
+		eye[0] = fps_x_at + fps_dist * cos(fps_theta * M_PI / 180.0) * cos(fps_phi * M_PI / 180.0);
+		eye[1] = fps_y_at + fps_dist * sin(fps_theta * M_PI / 180.0) * cos(fps_phi * M_PI / 180.0);
+		eye[2] = 2.0 + fps_dist * sin(fps_phi * M_PI / 180.0);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		gluLookAt(eye[0], eye[1], eye[2], fps_x_at, fps_y_at, 2.0, 0.0, 0.0, 1.0);
+	}
+	else if(this->viewingMode == VIEWMODE_FIXED) {
+
+		CameraPos pos = this->fixedCamera->GetCurrentPos();
+		float dist_fixed = 5.0f;
+
+		eye[0] = pos.xPos - dist_fixed * cos(pos.theta * M_PI / 180.0) * cos(pos.phi* M_PI / 180.0);
+		eye[1] = pos.yPos - dist_fixed * sin(pos.theta * M_PI / 180.0) * cos(pos.phi * M_PI / 180.0);
+		eye[2] = pos.zPos - dist_fixed * sin(pos.phi* M_PI / 180.0);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		gluLookAt(pos.xPos, pos.yPos, pos.zPos, eye[0], eye[1], eye[2], 0.0, 0.0, 1.0);
+	}
 
     // Position the light source. This has to happen after the viewing
     // transformation is set up, so that the light stays fixed in world
@@ -430,47 +528,63 @@ WorldWindow::handle(int event)
     // Event handling routine. Only looks at mouse events.
     // Stores a bunch of values when the mouse goes down and keeps track
     // of where the mouse is and what mouse button is down, if any.
-    switch ( event )
+	switch ( event )
     {
-      case FL_PUSH:
-        button = Fl::event_button();
-		x_last = x_down = Fl::event_x();
-		y_last = y_down = Fl::event_y();
-		phi_down = phi;
-		theta_down = theta;
-		dist_down = dist;
-		x_at_down = x_at;
-		y_at_down = y_at;
-		return 1;
-      case FL_DRAG:
-		x_last = Fl::event_x();
-		y_last = Fl::event_y();
-		return 1;
-      case FL_RELEASE:
-		button = -1;
-		return 1;
-	  case FL_KEYDOWN:
-		if(Fl::event_key() == (int)'w') {
-			this->Move(-2.0,0);
-		}
-		else if(Fl::event_key() == (int)'s') {
-			this->Move(2.0,0);
-		}
-		else if(Fl::event_key() == (int)'a') {
-			this->Move(0,-2.0);
-		}
-		else if(Fl::event_key() == (int)'d') {
-			this->Move(0,2.0);
-		}
-		break;
-	  case FL_KEYUP:
-		  if(Fl::event_key() == (int)'o')
-			  signalGates = true;
-		  if(Fl::event_key() == (int)'v') {
-			  this->viewingMode = VIEWMODE_FPS;
-		  }
-		  
-			  
+		case FL_MOVE:
+			if(this->viewingMode == VIEWMODE_FPS) {
+				fps_mouseX = Fl::event_x();
+				fps_mouseY = Fl::event_y();
+			}
+			return 1;
+		case FL_PUSH:
+			if(this->viewingMode == VIEWMODE_NORMAL) {
+				button = Fl::event_button();
+				x_last = x_down = Fl::event_x();
+				y_last = y_down = Fl::event_y();
+				phi_down = phi;
+				theta_down = theta;
+				dist_down = dist;
+				x_at_down = x_at;
+				y_at_down = y_at;
+			}
+			return 1;
+		case FL_DRAG:
+			if(this->viewingMode == VIEWMODE_NORMAL) {
+				x_last = Fl::event_x();
+				y_last = Fl::event_y();
+			}
+			return 1;
+		case FL_RELEASE:
+			if(this->viewingMode == VIEWMODE_NORMAL) {
+				button = -1;
+			}
+			return 1;
+		case FL_KEYDOWN:
+			if(this->viewingMode == VIEWMODE_FPS) {
+				if(Fl::event_key() == (int)'w') {
+					this->Move(-2.0,0);
+				}
+				else if(Fl::event_key() == (int)'s') {
+					this->Move(2.0,0);
+				}
+				else if(Fl::event_key() == (int)'a') {
+					this->Move(0,-2.0);
+				}
+				else if(Fl::event_key() == (int)'d') {
+					this->Move(0,2.0);
+				}
+			}
+			break;
+		case FL_KEYUP:
+			if(Fl::event_key() == (int)'o')
+				signalGates = true;
+			if(Fl::event_key() == (int)'v') {
+				this->ChangeViewmode();
+			}
+			if(Fl::event_key() == (int)'.' && this->viewingMode == VIEWMODE_FIXED) {
+				this->fixedCamera->NextPosition();
+			}
+			break;
     }
 
     // Pass any other event types on the superclass.
@@ -487,16 +601,16 @@ void WorldWindow::Move(float yDir, float xDir) {
 	float dy = -5.0f;
 	//float walkDistance = -5.0f;
 
-	x_axis[0] = -(float)sin(theta * M_PI / 180.0);
-	x_axis[1] = (float)cos(theta * M_PI / 180.0);
+	x_axis[0] = -(float)sin(fps_theta * M_PI / 180.0);
+	x_axis[1] = (float)cos(fps_theta * M_PI / 180.0);
 	y_axis[0] = x_axis[1];
 	y_axis[1] = -x_axis[0];
 
-	float moveX = (yDir * (float)cos(theta * M_PI / 180.0)) + (xDir * x_axis[0]);
-	float moveY = (yDir * (float)sin(theta * M_PI / 180.0)) + (xDir * x_axis[1]);;
+	float moveX = (yDir * (float)cos(fps_theta * M_PI / 180.0)) + (xDir * x_axis[0]);
+	float moveY = (yDir * (float)sin(fps_theta * M_PI / 180.0)) + (xDir * x_axis[1]);;
 
-	x_at += moveX;
-	y_at += moveY;
+	fps_x_at += moveX;
+	fps_y_at += moveY;
 	//x_at = x_at + 100.0f * ( x_axis[0] * dx / (float)w() + y_axis[0] * dy / (float)h() );
 	//y_at = y_at + 100.0f * ( x_axis[1] * dx / (float)w() + y_axis[1] * dy / (float)h() );
 }
@@ -510,6 +624,9 @@ void WorldWindow::ChangeViewmode() {
 		this->viewingMode = VIEWMODE_FPS;
 	}
 	else if(this->viewingMode == VIEWMODE_FPS) {
+		this->viewingMode = VIEWMODE_FIXED;
+	}
+	else if(this->viewingMode == VIEWMODE_FIXED) {
 		this->viewingMode = VIEWMODE_NORMAL;
 	}
 }

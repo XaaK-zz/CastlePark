@@ -194,6 +194,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FixedCamera.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Flag.cpp"
 				>
 			</File>
@@ -261,6 +265,10 @@
 			</File>
 			<File
 				RelativePath=".\CubicBspline.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FixedCamera.h"
 				>
 			</File>
 			<File

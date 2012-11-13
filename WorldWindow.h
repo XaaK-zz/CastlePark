@@ -18,11 +18,13 @@
 #include "Wall.h"
 #include "TextureManager.h"
 #include <vector>
+#include "FixedCamera.h"
 
 using namespace std;
 
 #define VIEWMODE_NORMAL 1
 #define VIEWMODE_FPS	2
+#define VIEWMODE_FIXED	3
 
 // Subclass the Fl_Gl_Window because we want to draw OpenGL in here.
 class WorldWindow : public Fl_Gl_Window {
@@ -78,6 +80,18 @@ protected:
 
 	void Move(float yDir, float xDir);
 	void ChangeViewmode();
+
+	//specific values for fps view
+	float fps_x_at;
+	float fps_y_at;
+	float fps_dist;
+	float fps_phi;
+	float fps_theta;
+	int fps_mouseX;
+	int fps_mouseY;
+
+	//fixed Camera object
+	FixedCamera *fixedCamera;
 };
 
 
