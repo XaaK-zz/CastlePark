@@ -33,9 +33,9 @@ WorldWindow::WorldWindow(int x, int y, int width, int height, char *label)
     // Initial viewing parameters.
     phi = 45.0f;
     theta = -90.0f;
-    dist = 100.0f;
+    dist = 25.0f;
     x_at = 0.0f;
-    y_at = -50.0f;
+    y_at = 00.0f;
 
 	worldObjects = new vector<WorldObject*>();
 	
@@ -205,30 +205,39 @@ WorldWindow::draw(void)
 		delete treeArray;
 		
 	
-		Flag *flag = new Flag(50.0f,50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f,this->textureManager);
+		Flag *flag = new Flag(50.0f,50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f,1.0f, 0.0f, 0.0f, 1, 0.0f,this->textureManager);
 		flag->Initialize();
 		worldObjects->push_back(flag);
 
-		flag = new Flag(-50.0f,50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f,this->textureManager);
+		flag = new Flag(-50.0f,50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f,1.0f, 0.0f, 0.0f, 1, 0.0f,this->textureManager);
 		flag->Initialize();
 		worldObjects->push_back(flag);
 
-		flag = new Flag(50.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f,this->textureManager);
+		flag = new Flag(50.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f,1.0f, 0.0f, 0.0f, 1, 0.0f,this->textureManager);
 		flag->Initialize();
 		worldObjects->push_back(flag);
 
-		flag = new Flag(-50.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f,this->textureManager);
+		flag = new Flag(-50.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,2.0f,0.2f,0.2f,1.0f, 0.0f, 0.0f, 1, 0.0f,this->textureManager);
 		flag->Initialize();
 		worldObjects->push_back(flag);
 
 		//big flags
-		flag = new Flag(10.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,3.0f,1.0f,1.0f,this->textureManager);
+		flag = new Flag(10.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,3.0f,1.0f,1.0f,1.0f, 0.0f, 1.0f, 1, 0.0f,this->textureManager);
 		flag->Initialize();
 		worldObjects->push_back(flag);
 
-		flag = new Flag(-10.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,3.0f,1.0f,1.0f,this->textureManager);
+		flag = new Flag(-10.0f,-50.0f,14.0f,1.0f,1.0f,1.0f,3.0f,1.0f,1.0f,1.0f, 0.0f, 1.0f, 1, 0.0f,this->textureManager);
 		flag->Initialize();
 		worldObjects->push_back(flag);
+
+		//stage flags
+		flag = new Flag(37.0f,-46.0f,0.0f,1.0f,1.0f,1.0f,3.0f,2.0f,1.0f,0.7f, 0.0f, 0.7f, 2, 15.0f,this->textureManager);
+		flag->Initialize();
+		worldObjects->push_back(flag);
+
+		//flag = new Flag(40.0f,-48.0f,0.0f,1.0f,1.0f,1.0f,3.0f,2.0f,1.0f,0.7f, 0.0f, 0.7f, 2, 0.0f,this->textureManager);
+		//flag->Initialize();
+		//worldObjects->push_back(flag);
 
 		/////////////////////////////////////////////////////////////////////////////////////////
 		//benches
@@ -357,22 +366,22 @@ WorldWindow::Drag(float dt)
 	// appears to move under the viewer.
 	float	x_axis[2];
 	float	y_axis[2];
-	cout << "Right Mouse Drag: x_at: " << x_at << " y_at: " << y_at
-		 << " theta: " << theta << endl;
+	//cout << "Right Mouse Drag: x_at: " << x_at << " y_at: " << y_at
+	//	 << " theta: " << theta << endl;
 
 	x_axis[0] = -(float)sin(theta * M_PI / 180.0);
 	x_axis[1] = (float)cos(theta * M_PI / 180.0);
 	y_axis[0] = x_axis[1];
 	y_axis[1] = -x_axis[0];
 
-	cout << "	x_axis[0]: " << x_axis[0] << " x_axis[1]: " << x_axis[1] << endl 
-		 << "	y_axis[0]: " << y_axis[0] << " y_axis[1]: " << y_axis[1] << endl; 
+	//cout << "	x_axis[0]: " << x_axis[0] << " x_axis[1]: " << x_axis[1] << endl 
+	//	 << "	y_axis[0]: " << y_axis[0] << " y_axis[1]: " << y_axis[1] << endl; 
 
-	cout << "	dx: " << dx << " dy: " << dy << " x_at_down: " << x_at_down 
-		 << "	y_at_down: " << y_at_down << endl;
+	//cout << "	dx: " << dx << " dy: " << dy << " x_at_down: " << x_at_down 
+	//	 << "	y_at_down: " << y_at_down << endl;
 
-	cout << "	x_axis[0] * dx / (float)w(): " <<  x_axis[0] * dx / (float)w() << endl
-		<< "	y_axis[0] * dy / (float)h(): " << y_axis[0] * dy / (float)h() << endl; 
+	//cout << "	x_axis[0] * dx / (float)w(): " <<  x_axis[0] * dx / (float)w() << endl
+	//	<< "	y_axis[0] * dy / (float)h(): " << y_axis[0] * dy / (float)h() << endl; 
 
 	x_at = x_at_down + 100.0f * ( x_axis[0] * dx / (float)w()
 				    + y_axis[0] * dy / (float)h() );
@@ -458,7 +467,7 @@ WorldWindow::handle(int event)
 
 void WorldWindow::MoveForward() {
 
-	cout << "MoveForward. theta: " << theta << endl;
+	//cout << "MoveForward. theta: " << theta << endl;
 
 	float	x_axis[2];
 	float	y_axis[2];

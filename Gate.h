@@ -19,7 +19,7 @@ protected:
 
 public:
 	Gate(void);
-	Gate(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, float pivotPoint, float gateDir, TextureManager *textureMgr);
+	Gate(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, float pivotPoint, int gateDir, TextureManager *textureMgr);
 	virtual ~Gate(void);
 	
 	void ChangeGateState();

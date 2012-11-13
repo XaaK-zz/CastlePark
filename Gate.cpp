@@ -5,7 +5,7 @@ Gate::Gate(void)
 }
 
 
-Gate::Gate(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, float pPoint, float gateDir, TextureManager *textureMgr) 
+Gate::Gate(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, float pPoint, int gateDir, TextureManager *textureMgr) 
 : WorldObject(posX, posY, posZ, scaleX, scaleY, scaleZ, textureMgr) {
 
 	this->gateState = GATE_CLOSED;

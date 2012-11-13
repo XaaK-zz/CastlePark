@@ -5,11 +5,17 @@ Flag::Flag(void)
 {
 }
 
-Flag::Flag(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, float height, float fheight, float fLength, TextureManager *textureMgr)
+Flag::Flag(float posX, float posY, float posZ, float scaleX, float scaleY, float scaleZ, float height, float fheight, float fLength, 
+		   float red, float green, float blue,  int flagType, float rotate, TextureManager *textureMgr)
 : WorldObject(posX, posY, posZ, scaleX, scaleY, scaleZ, textureMgr) {
 	this->poleHeight = height;
 	this->flagHeight = fheight;
 	this->flagLength = fLength;
+	this->redColor = red;
+	this->greenColor = green;
+	this->blueColor = blue;
+	this->flagType = flagType;
+	this->rotateAngle = rotate;
 }
 
 Flag::~Flag(void)
@@ -56,49 +62,78 @@ bool Flag::Initialize(void) {
 	glPopMatrix();
 	glEnd();
 	
+	glPushMatrix();
+	glRotatef(this->rotateAngle,0,0,1.0f);
 	//create flag 
-	//float flagHeight = 0.2;
-	glColor3f(1.0f, 0.0f, 0.0f);
-	
-	glBegin(GL_QUADS);
-	glNormal3f(-1.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, this->poleHeight-0.1f);
-	glVertex3f(0.0f, 0.0f, this->poleHeight-flagHeight-0.1f);
-	glVertex3f(0.5f, 0.0f, this->poleHeight-flagHeight-0.1f);
-	glVertex3f(0.5f, 0.0f, this->poleHeight-0.1f);
+	glColor3f(this->redColor, this->greenColor, this->blueColor);
+	if(this->flagType == 1) {
+		glBegin(GL_QUADS);
+		glNormal3f(-1.0f, 0.0f, 0.0f);
+		glVertex3f(0.0f, 0.0f, this->poleHeight-0.1f);
+		glVertex3f(0.0f, 0.0f, this->poleHeight-flagHeight-0.1f);
+		glVertex3f(0.5f, 0.0f, this->poleHeight-flagHeight-0.1f);
+		glVertex3f(0.5f, 0.0f, this->poleHeight-0.1f);
 
-	glNormal3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, this->poleHeight-0.1f);
-	glVertex3f(0.5f, 0.0f, this->poleHeight-0.1f);
-	glVertex3f(0.5f, 0.0f, this->poleHeight-flagHeight-0.1f);
-	glVertex3f(0.0f, 0.0f, this->poleHeight-flagHeight-0.1f);
+		glNormal3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(0.0f, 0.0f, this->poleHeight-0.1f);
+		glVertex3f(0.5f, 0.0f, this->poleHeight-0.1f);
+		glVertex3f(0.5f, 0.0f, this->poleHeight-flagHeight-0.1f);
+		glVertex3f(0.0f, 0.0f, this->poleHeight-flagHeight-0.1f);
 
-	glEnd();
+		glEnd();
 
-	glBegin(GL_TRIANGLES);
-	glNormal3f(-1.0f, 0.0f, 0.0f);
-	glVertex3f(0.5f + this->flagLength, 0.0f, this->poleHeight-0.1f);
-	glVertex3f(0.5f, 0.0f, this->poleHeight-0.1f);
-	glVertex3f(0.5f, 0.0f, this->poleHeight-flagHeight-0.1f);
+		glBegin(GL_TRIANGLES);
+		glNormal3f(-1.0f, 0.0f, 0.0f);
+		glVertex3f(0.5f + this->flagLength, 0.0f, this->poleHeight-0.1f);
+		glVertex3f(0.5f, 0.0f, this->poleHeight-0.1f);
+		glVertex3f(0.5f, 0.0f, this->poleHeight-flagHeight-0.1f);
 
-	glNormal3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(0.5f + this->flagLength, 0.0f, this->poleHeight-0.1f);
-	glVertex3f(0.5f, 0.0f, this->poleHeight-flagHeight-0.1f);
-	glVertex3f(0.5f, 0.0f, this->poleHeight-0.1f);
+		glNormal3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(0.5f + this->flagLength, 0.0f, this->poleHeight-0.1f);
+		glVertex3f(0.5f, 0.0f, this->poleHeight-flagHeight-0.1f);
+		glVertex3f(0.5f, 0.0f, this->poleHeight-0.1f);
 
-	glNormal3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(0.5f + this->flagLength, 0.01f, this->poleHeight-flagHeight-0.1f);
-	glVertex3f(0.5f, 0.01f, this->poleHeight-flagHeight-0.1f);
-	glVertex3f(0.5f, 0.01f, this->poleHeight-0.1f);
+		glNormal3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(0.5f + this->flagLength, 0.01f, this->poleHeight-flagHeight-0.1f);
+		glVertex3f(0.5f, 0.01f, this->poleHeight-flagHeight-0.1f);
+		glVertex3f(0.5f, 0.01f, this->poleHeight-0.1f);
 
-	glNormal3f(-1.0f, 0.0f, 0.0f);
-	glVertex3f(0.5f + this->flagLength, 0.01f, this->poleHeight-flagHeight-0.1f);
-	glVertex3f(0.5f, 0.01f, this->poleHeight-0.1f);
-	glVertex3f(0.5f, 0.01f, this->poleHeight-flagHeight-0.1f);
+		glNormal3f(-1.0f, 0.0f, 0.0f);
+		glVertex3f(0.5f + this->flagLength, 0.01f, this->poleHeight-flagHeight-0.1f);
+		glVertex3f(0.5f, 0.01f, this->poleHeight-0.1f);
+		glVertex3f(0.5f, 0.01f, this->poleHeight-flagHeight-0.1f);
 
-	glEnd();
+		glEnd();
+	}
+	else if(this->flagType == 2) {
+		glBegin(GL_QUADS);
+			glNormal3f(1.0f, 0.0f, 0.0f);
+			glVertex3f(-0.4f, 0.1f, this->poleHeight-0.1f);
+			glVertex3f(0.4f, 0.1f, this->poleHeight-0.1f);
+			glVertex3f(0.4f, 0.1f, this->poleHeight-flagHeight-0.1f);
+			glVertex3f(-0.4f, 0.1f, this->poleHeight-flagHeight-0.1f);
 
+			glNormal3f(-1.0f, 0.0f, 0.0f);
+			glVertex3f(-0.4f, 0.1f, this->poleHeight-0.1f);
+			glVertex3f(-0.4f, 0.1f, this->poleHeight-flagHeight-0.1f);
+			glVertex3f(0.4f, 0.1f, this->poleHeight-flagHeight-0.1f);
+			glVertex3f(0.4f, 0.1f, this->poleHeight-0.1f);
+		glEnd();
 
+		glBegin(GL_TRIANGLES);
+			glNormal3f(1.0f, 0.0f, 0.0f);
+			glVertex3f(-0.4f, 0.1f, this->poleHeight-flagHeight-0.1f);
+			glVertex3f(0.4f, 0.1f, this->poleHeight-flagHeight-0.1f);
+			glVertex3f(0.0f, 0.1f, this->poleHeight-flagHeight-0.3f);
+
+			glNormal3f(-1.0f, 0.0f, 0.0f);
+			glVertex3f(-0.4f, 0.1f, this->poleHeight-flagHeight-0.1f);
+			glVertex3f(0.0f, 0.1f, this->poleHeight-flagHeight-0.3f);
+			glVertex3f(0.4f, 0.1f, this->poleHeight-flagHeight-0.1f);
+		glEnd();
+	}
+
+	glPopMatrix();
 	glPopAttrib();
 	/////////////////////////////
 
