@@ -76,7 +76,8 @@ protected:
 	TextureManager *textureManager;
 	int viewingMode;
 
-	void MoveForward();
+	void Move(float yDir, float xDir);
+	void ChangeViewmode();
 };
 
 

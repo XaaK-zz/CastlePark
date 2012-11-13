@@ -449,15 +449,27 @@ WorldWindow::handle(int event)
       case FL_RELEASE:
 		button = -1;
 		return 1;
+	  case FL_KEYDOWN:
+		if(Fl::event_key() == (int)'w') {
+			this->Move(-2.0,0);
+		}
+		else if(Fl::event_key() == (int)'s') {
+			this->Move(2.0,0);
+		}
+		else if(Fl::event_key() == (int)'a') {
+			this->Move(0,-2.0);
+		}
+		else if(Fl::event_key() == (int)'d') {
+			this->Move(0,2.0);
+		}
+		break;
 	  case FL_KEYUP:
 		  if(Fl::event_key() == (int)'o')
 			  signalGates = true;
 		  if(Fl::event_key() == (int)'v') {
 			  this->viewingMode = VIEWMODE_FPS;
 		  }
-		  if(Fl::event_key() == (int)'w') {
-			  this->MoveForward();
-		  }
+		  
 			  
     }
 
@@ -465,7 +477,7 @@ WorldWindow::handle(int event)
     return Fl_Gl_Window::handle(event);
 }
 
-void WorldWindow::MoveForward() {
+void WorldWindow::Move(float yDir, float xDir) {
 
 	//cout << "MoveForward. theta: " << theta << endl;
 
@@ -473,15 +485,15 @@ void WorldWindow::MoveForward() {
 	float	y_axis[2];
 	float dx = 0.0f;
 	float dy = -5.0f;
-	float walkDistance = -5.0f;
+	//float walkDistance = -5.0f;
 
 	x_axis[0] = -(float)sin(theta * M_PI / 180.0);
 	x_axis[1] = (float)cos(theta * M_PI / 180.0);
 	y_axis[0] = x_axis[1];
 	y_axis[1] = -x_axis[0];
 
-	float moveX = walkDistance * (float)cos(theta * M_PI / 180.0);
-	float moveY = walkDistance * (float)sin(theta * M_PI / 180.0);
+	float moveX = (yDir * (float)cos(theta * M_PI / 180.0)) + (xDir * x_axis[0]);
+	float moveY = (yDir * (float)sin(theta * M_PI / 180.0)) + (xDir * x_axis[1]);;
 
 	x_at += moveX;
 	y_at += moveY;
@@ -490,3 +502,14 @@ void WorldWindow::MoveForward() {
 }
 
 
+
+
+
+void WorldWindow::ChangeViewmode() {
+	if(this->viewingMode == VIEWMODE_NORMAL) {
+		this->viewingMode = VIEWMODE_FPS;
+	}
+	else if(this->viewingMode == VIEWMODE_FPS) {
+		this->viewingMode = VIEWMODE_NORMAL;
+	}
+}
