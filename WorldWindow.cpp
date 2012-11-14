@@ -49,8 +49,11 @@ WorldWindow::WorldWindow(int x, int y, int width, int height, char *label)
 	this->signalGates = false;
 	this->textureManager = new TextureManager();
 
+	//fixed camera locations
 	this->fixedCamera = new FixedCamera();
-	this->fixedCamera->AddCameraPos(0.0f,0.0f,13.0f,0.0f,135.0f);
+	this->fixedCamera->AddCameraPos(125.0f,-125.0f,100.0f,27.0f,-45.0f);
+	this->fixedCamera->AddCameraPos(50.5f,50.5f,15.5f,15.0f,45.0f);
+	this->fixedCamera->AddCameraPos(40.5f,-40.5f,2.0f,0.0f,-45.0f);
 }
 
 // Destructor
@@ -414,6 +417,18 @@ WorldWindow::draw(void)
 		glLoadIdentity();
 		gluLookAt(pos.xPos, pos.yPos, pos.zPos, eye[0], eye[1], eye[2], 0.0, 0.0, 1.0);
 	}
+	else if(this->viewingMode == VIEWMODE_COASTER) {
+
+		CameraPos pos = this->traintrack.GetCameraPos();
+		float dist_fixed = 5.0f;
+
+		eye[0] = pos.xPos - dist_fixed * cos(pos.theta * M_PI / 180.0) * cos(pos.phi* M_PI / 180.0);
+		eye[1] = pos.yPos - dist_fixed * sin(pos.theta * M_PI / 180.0) * cos(pos.phi * M_PI / 180.0);
+		eye[2] = pos.zPos - dist_fixed * sin(pos.phi* M_PI / 180.0);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		gluLookAt(pos.xPos, pos.yPos, pos.zPos, eye[0], eye[1], eye[2], 0.0, 0.0, 1.0);
+	}
 
     // Position the light source. This has to happen after the viewing
     // transformation is set up, so that the light stays fixed in world
@@ -627,6 +642,9 @@ void WorldWindow::ChangeViewmode() {
 		this->viewingMode = VIEWMODE_FIXED;
 	}
 	else if(this->viewingMode == VIEWMODE_FIXED) {
+		this->viewingMode = VIEWMODE_COASTER;
+	}
+	else if(this->viewingMode == VIEWMODE_COASTER) {
 		this->viewingMode = VIEWMODE_NORMAL;
 	}
 }

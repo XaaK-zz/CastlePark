@@ -176,8 +176,7 @@ Track::Draw(void)
 }
 
 
-void
-Track::Update(float dt)
+void Track::Update(float dt)
 {
     float   point[3];
     float   deriv[3];
@@ -206,7 +205,7 @@ Track::Update(float dt)
 
     // If we've just gone around the track, reset back to the start.
     if ( posn_on_track > track->N() )
-	posn_on_track -= track->N();
+		posn_on_track -= track->N();
 
     // As the second step, we use conservation of energy to set the speed
     // for the next time.
@@ -219,3 +218,27 @@ Track::Update(float dt)
 }
 
 
+
+CameraPos Track::GetCameraPos() {
+	CameraPos x;
+	float   posn[3];
+    float   tangent[3];
+    double  angle, angle2;
+
+	// Figure out where the train is
+    this->track->Evaluate_Point(this->posn_on_track, posn);
+	track->Evaluate_Derivative(posn_on_track, tangent);
+    Normalize_3(tangent);
+
+	angle = atan2(tangent[1], tangent[0]) * 180.0 / M_PI;
+    angle2 = 30.0;//asin(-tangent[2]) * 180.0 / M_PI;
+    
+
+	x.xPos = posn[0];
+	x.yPos = posn[1];
+	x.zPos = posn[2]+3.5f;
+	x.phi = angle2;
+	x.theta = angle-180.0;
+
+	return x;
+}

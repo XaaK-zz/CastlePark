@@ -10,6 +10,7 @@
 
 #include <Fl/gl.h>
 #include "CubicBspline.h"
+#include "WorldObject.h"
 
 class Track {
   private:
@@ -35,6 +36,8 @@ class Track {
     bool    Initialize(void);	// Gets everything set up for drawing.
     void    Update(float);	// Updates the location of the train
     void    Draw(void);		// Draws everything.
+
+	CameraPos GetCameraPos();
 };
 
 

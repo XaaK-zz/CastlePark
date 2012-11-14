@@ -18,6 +18,14 @@
 
 using namespace std;
 
+struct CameraPos {
+	float xPos;
+	float yPos;
+	float zPos;
+	float phi;
+	float theta;
+};
+
 class WorldObject
 {
 protected:

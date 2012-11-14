@@ -22,9 +22,10 @@
 
 using namespace std;
 
-#define VIEWMODE_NORMAL 1
-#define VIEWMODE_FPS	2
-#define VIEWMODE_FIXED	3
+#define VIEWMODE_NORMAL		1
+#define VIEWMODE_FPS		2
+#define VIEWMODE_FIXED		3
+#define VIEWMODE_COASTER	4
 
 // Subclass the Fl_Gl_Window because we want to draw OpenGL in here.
 class WorldWindow : public Fl_Gl_Window {

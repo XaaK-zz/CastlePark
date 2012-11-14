@@ -1,16 +1,10 @@
 #pragma once
 
 #include <vector>
+#include "WorldObject.h"
 
 using namespace std;
 
-struct CameraPos {
-	float xPos;
-	float yPos;
-	float zPos;
-	float phi;
-	float theta;
-};
 
 class FixedCamera
 {
