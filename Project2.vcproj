@@ -194,6 +194,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Dragon.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FixedCamera.cpp"
 				>
 			</File>
@@ -265,6 +269,10 @@
 			</File>
 			<File
 				RelativePath=".\CubicBspline.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Dragon.h"
 				>
 			</File>
 			<File

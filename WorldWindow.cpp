@@ -20,6 +20,7 @@
 #include "Bench.h"
 #include <stdlib.h>
 #include <time.h>
+#include "dragon.h"
 
 const double WorldWindow::FOV_X = 45.0;
 
@@ -363,6 +364,11 @@ WorldWindow::draw(void)
 		bench = new Bench(30.0f,-47.0f,0.0f,1.0f,0.5f,0.5f,90.0f,1, this->textureManager);
 		bench->Initialize();
 		worldObjects->push_back(bench);
+
+		Dragon *dragon = new Dragon(0,0,0,1.0f,1.0f,1.0f,this->textureManager);
+		dragon->Initialize();
+		worldObjects->push_back(dragon);
+
 		//////////////////////////////////////////////////////////////////////////////////
     }
 

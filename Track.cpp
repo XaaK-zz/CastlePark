@@ -231,13 +231,12 @@ CameraPos Track::GetCameraPos() {
     Normalize_3(tangent);
 
 	angle = atan2(tangent[1], tangent[0]) * 180.0 / M_PI;
-    angle2 = 30.0;//asin(-tangent[2]) * 180.0 / M_PI;
-    
+    angle2 = asin(-tangent[2]) * 180.0 / M_PI;//30
 
 	x.xPos = posn[0];
 	x.yPos = posn[1];
 	x.zPos = posn[2]+3.5f;
-	x.phi = angle2;
+	x.phi = angle2 + 20.0f;
 	x.theta = angle-180.0;
 
 	return x;
