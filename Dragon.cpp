@@ -183,8 +183,8 @@ bool Dragon::Initialize(void) {
 	//glTranslatef (-0.55f, 0.45f, 0.95f); 
 	glRotatef(20.0f,0,0,1.0f);
 	glRotatef(-55.0f,1.0f,0,0);
-	glScalef(0.08f,0.08f,2.0f);
-    
+	//glScalef(0.08f,0.08f,2.0f);
+  /*  
 	float angle = 0.0f;
 	float nextAngle = 0.0f;
 	int numRect = 10;
@@ -206,6 +206,12 @@ bool Dragon::Initialize(void) {
 
 		delete [] temp;
 	}
+*/
+	int size;
+	Vertex *sphereVertices = Utility::CreateSphere(30,1.0f,0,0,0,&size);
+	Utility::DrawSphere(sphereVertices,size);
+	delete [] sphereVertices;
+	/*
 	glPopMatrix();
 	
 	glPushMatrix();
@@ -213,12 +219,12 @@ bool Dragon::Initialize(void) {
 	float x = cos(20.0f * 180/M_PI);
 	float y = sin(20.0f* 180/M_PI);
 	float r = sqrtf(pow(x,2)+pow(y,2));
-	glTranslatef (cos(20.0f * 180/M_PI) * r, sin(20.0f* 180/M_PI) * r, sin(305.0f * 180/M_PI) * 2.0); /*  move position  */
+	glTranslatef (cos(20.0f * 180/M_PI) * r, sin(20.0f* 180/M_PI) * r, sin(305.0f * 180/M_PI) * 2.0); 
 	glutSolidSphere(0.1f,10,10);
-	//glTranslatef (0.0f, 0.0f, -2.0f); /*  move position  */
+	//glTranslatef (0.0f, 0.0f, -2.0f); 
 	glPopMatrix();
-
 	glEnd();
+	*/
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 	glEndList();

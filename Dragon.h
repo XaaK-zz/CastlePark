@@ -1,5 +1,6 @@
 #pragma once
 #include "worldobject.h"
+#include "Utility.h"
 
 class Dragon : public WorldObject{
 protected:

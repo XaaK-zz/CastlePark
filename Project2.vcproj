@@ -242,6 +242,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Utility.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Wall.cpp"
 				>
 			</File>
@@ -317,6 +321,10 @@
 			</File>
 			<File
 				RelativePath=".\Tree.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Utility.h"
 				>
 			</File>
 			<File
