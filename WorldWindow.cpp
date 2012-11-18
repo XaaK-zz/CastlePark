@@ -365,7 +365,7 @@ WorldWindow::draw(void)
 		bench->Initialize();
 		worldObjects->push_back(bench);
 
-		Dragon *dragon = new Dragon(0,0,0,1.0f,1.0f,1.0f,this->textureManager);
+		Dragon *dragon = new Dragon(10.0f,0,0,1.0f,1.0f,1.0f,this->textureManager);
 		dragon->Initialize();
 		worldObjects->push_back(dragon);
 

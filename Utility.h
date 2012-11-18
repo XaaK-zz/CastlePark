@@ -9,6 +9,9 @@ typedef struct {
 	float z;
 	float u;
 	float v;
+	float normalX;
+	float normalY;
+	float normalZ;
 } Vertex;
 
 class Utility

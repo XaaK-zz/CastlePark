@@ -6,6 +6,9 @@ class Dragon : public WorldObject{
 protected:
 	GLuint displayListIndex;
 	int numDisplayLists;
+	float tailAngle;
+	int tailUpdateCounter;
+	bool tailDirection;
 
 public:
 	Dragon(void);
