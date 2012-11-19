@@ -41,7 +41,7 @@ Track::~Track(void)
     if ( initialized )
     {
 	glDeleteLists(track_list, 1);
-	glDeleteLists(train_list, 1);
+	//glDeleteLists(train_list, 1);
     }
 }
 
@@ -81,6 +81,9 @@ Track::Initialize(void)
 	glEnd();
     glEndList();
 
+	this->dragon = new Dragon(0.0f,0,0,1.0f,1.0f,1.0f,0);
+	dragon->Initialize();
+	/*
     // Set up the train. At this point a cube is drawn. NOTE: The
     // x-axis will be aligned to point along the track. The origin of the
     // train is assumed to be at the bottom of the train.
@@ -125,7 +128,7 @@ Track::Initialize(void)
 	glVertex3f(-0.5f, -0.5f, 0.0f);
     glEnd();
     glEndList();
-
+	*/
     initialized = true;
 
     return true;
@@ -155,11 +158,12 @@ Track::Draw(void)
 
     // Translate the train to the point
     glTranslatef(posn[0], posn[1], posn[2]);
+	//this->dragon->setPosition(posn[0],posn[1],posn[2]);
 
     // ...and what it's orientation is
     track->Evaluate_Derivative(posn_on_track, tangent);
     Normalize_3(tangent);
-
+	
     // Rotate it to poitn along the track, but stay horizontal
     angle = atan2(tangent[1], tangent[0]) * 180.0 / M_PI;
     glRotatef((float)angle, 0.0f, 0.0f, 1.0f);
@@ -168,8 +172,12 @@ Track::Draw(void)
     angle = asin(-tangent[2]) * 180.0 / M_PI;
     glRotatef((float)angle, 0.0f, 1.0f, 0.0f);
 
+	glRotatef(180.0f, 0.0f, 0.0f, 1.0f);
+
+
     // Draw the train
-    glCallList(train_list);
+    //glCallList(train_list);
+	this->dragon->Draw();
 
     glPopMatrix();
     glPopMatrix();
@@ -187,6 +195,7 @@ void Track::Update(float dt)
 	return;
 
     // First we move the train along the track with its current speed.
+	this->dragon->Update(dt);
 
     // Get the derivative at the current location on the track.
     track->Evaluate_Derivative(posn_on_track, deriv);

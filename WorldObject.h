@@ -48,4 +48,6 @@ public:
 	float *computeNormal(float trianglePt1X,float trianglePt1Y,float trianglePt1Z,
 					 float trianglePt2X,float trianglePt2Y,float trianglePt2Z,
 					 float trianglePt3X,float trianglePt3Y,float trianglePt3Z);
+
+	void SetPosition(float x, float y, float z);
 };

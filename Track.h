@@ -11,11 +11,12 @@
 #include <Fl/gl.h>
 #include "CubicBspline.h"
 #include "WorldObject.h"
+#include "Dragon.h"
 
 class Track {
   private:
     GLubyte 	    track_list;	    // The display list for the track.
-    GLubyte 	    train_list;	    // The display list for the train.
+    //GLubyte 	    train_list;	    // The display list for the train.
     bool    	    initialized;    // Whether or not we have been initialized.
     CubicBspline    *track;	    // The spline that defines the track.
     float	    posn_on_track;  // The train's parametric position on the
@@ -25,6 +26,7 @@ class Track {
     static const int	TRACK_NUM_CONTROLS;	// Constants about the track.
     static const float 	TRACK_CONTROLS[][3];
     static const float 	TRAIN_ENERGY;
+	Dragon *dragon;
 
   public:
     // Constructor

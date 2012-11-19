@@ -83,3 +83,10 @@ float* WorldObject::computeNormal(float trianglePt1X,float trianglePt1Y,float tr
 
 	return returnValues;
 }
+
+void WorldObject::SetPosition(float x, float y, float z) {
+
+	this->posX = x;
+	this->posY = y;
+	this->posZ = z;
+}

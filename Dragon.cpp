@@ -25,10 +25,10 @@ bool Dragon::Initialize(void) {
 
 	this->displayListIndex = glGenLists(numDisplayLists);
     glNewList(this->displayListIndex, GL_COMPILE);
-	glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_TEXTURE_2D);
 	//this->textureMgr->ActivateTexture("MainWall");
 
-    glColor3f(1.0, 1.0, 1.0);
+    glColor3f(0.64, 0.18, 0.13);
 	glMatrixMode(GL_MODELVIEW);
 	
 	glBegin(GL_QUADS);
@@ -78,15 +78,15 @@ bool Dragon::Initialize(void) {
 	
 	glEnd();
 	//glPopMatrix();
-	glDisable(GL_TEXTURE_2D);
+	//glDisable(GL_TEXTURE_2D);
 	glEndList();
 	/////////////////////////////////////////////////////////////////
 
 	//Tail//////////////////////////////////////////////////////////////
 	glNewList(this->displayListIndex+1, GL_COMPILE);
-	glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_TEXTURE_2D);
 	//this->textureMgr->ActivateTexture("MainWall");
-    glColor3f(1.0, 1.0, 1.0);
+    //glColor3f(1.0, 1.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
 	
 	glBegin(GL_TRIANGLES);
@@ -119,15 +119,15 @@ bool Dragon::Initialize(void) {
 	delete [] temp;
 
 	glEnd();
-	glDisable(GL_TEXTURE_2D);
+	//glDisable(GL_TEXTURE_2D);
 	glEndList();
 	//////////////////////////////////////////////////////////////////////
 
 	//Head/////////////////////////////////////////////////////////////////
 	glNewList(this->displayListIndex+2, GL_COMPILE);
-	glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_TEXTURE_2D);
 	//this->textureMgr->ActivateTexture("MainWall");
-    glColor3f(1.0, 1.0, 1.0);
+    //glColor3f(1.0, 1.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
 	
 	glBegin(GL_QUADS);
@@ -170,15 +170,15 @@ bool Dragon::Initialize(void) {
 	glTexCoord2f(1.0f, 0.0);	glVertex3f(-1.8f, -0.2f, 0.7f);
 
 	glEnd();
-	glDisable(GL_TEXTURE_2D);
+	//glDisable(GL_TEXTURE_2D);
 	glEndList();
 	////////////////////////////////////////////////////////////////////////
 		
 	//Right Wing////////////////////////////////////////////////////////////
 	glNewList(this->displayListIndex+3, GL_COMPILE);
-	glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_TEXTURE_2D);
 	//this->textureMgr->ActivateTexture("MainWall");
-    glColor3f(1.0, 1.0, 1.0);
+    //glColor3f(1.0, 1.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
 	
 	glPushMatrix();
@@ -210,6 +210,7 @@ bool Dragon::Initialize(void) {
 		delete [] temp;
 	}
 	//wing attached to main bone
+	glColor3f(0.87, 0.64, 0.62);
 	glBegin(GL_QUADS);
 		glNormal3f(0, -1.0f,0);
 		glTexCoord2f(1.0f, 1.0f);	glVertex3f(0,    0, 1.0f);
@@ -223,7 +224,7 @@ bool Dragon::Initialize(void) {
 		glTexCoord2f(0.0, 0.0);		glVertex3f(15.0f, 0, -0.3f);
 		glTexCoord2f(1.0f, 0.0);	glVertex3f(0,    0, 0.0f);
 	glEnd();
-
+	glColor3f(0.64, 0.18, 0.13);
 	//wing joint
 	glPopMatrix();
 	int size;
@@ -259,6 +260,7 @@ bool Dragon::Initialize(void) {
 	}
 
 	//wing membrane attached to end
+	glColor3f(0.87, 0.64, 0.62);
 	glBegin(GL_TRIANGLES);
 		glNormal3f(0, -1.0f,0);
 		glTexCoord2f(1.0f, 1.0f);	glVertex3f(0,    0, 2.0f);
@@ -273,15 +275,15 @@ bool Dragon::Initialize(void) {
 
 	glPopMatrix();
 	glPopMatrix();
-	glDisable(GL_TEXTURE_2D);
+	//glDisable(GL_TEXTURE_2D);
 	glEndList();
 	//////////////////////////////////////////////////////////////////////////////
 
 	//LEFT Wing////////////////////////////////////////////////////////////////
 	glNewList(this->displayListIndex+4, GL_COMPILE);
-	glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_TEXTURE_2D);
 	//this->textureMgr->ActivateTexture("MainWall");
-    glColor3f(1.0, 1.0, 1.0);
+    //glColor3f(1.0, 1.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
 	
 	glPushMatrix();
@@ -294,7 +296,7 @@ bool Dragon::Initialize(void) {
 	angle = 0.0f;
 	nextAngle = 0.0f;
 	numRect = 10;
-
+	glColor3f(0.64, 0.18, 0.13);
 	//Wing "bone"
 	for(int i=0;i<numRect;i++) {
 		angle = i*2*M_PI/numRect;
@@ -312,6 +314,7 @@ bool Dragon::Initialize(void) {
 
 		delete [] temp;
 	}
+	glColor3f(0.87, 0.64, 0.62);
 	//wing attached to main bone
 	glBegin(GL_QUADS);
 		glNormal3f(0, -1.0f,0);
@@ -326,7 +329,7 @@ bool Dragon::Initialize(void) {
 		glTexCoord2f(0.0, 0.0);		glVertex3f(15.0f, 0, -0.3f);
 		glTexCoord2f(1.0f, 0.0);	glVertex3f(0,    0, 0.0f);
 	glEnd();
-
+	glColor3f(0.64, 0.18, 0.13);
 	//wing joint
 	glPopMatrix();
 	sphereVertices = Utility::CreateSphere(1,0.1f,0,0,2.0f,&size);
@@ -366,6 +369,7 @@ bool Dragon::Initialize(void) {
 	}
 
 	//wing membrane attached to end
+	glColor3f(0.87, 0.64, 0.62);
 	glBegin(GL_TRIANGLES);
 		temp = computeNormal(0,0,2.0f,
 							0,0,1.0f,
@@ -386,7 +390,7 @@ bool Dragon::Initialize(void) {
 
 	glPopMatrix();
 	glPopMatrix();
-	glDisable(GL_TEXTURE_2D);
+	//glDisable(GL_TEXTURE_2D);
 	glEndList();
 
 
