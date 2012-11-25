@@ -12,6 +12,10 @@
 #include "CubicBspline.h"
 #include "WorldObject.h"
 #include "Dragon.h"
+#include <vector>
+#include "Utility.h"
+
+using namespace std;
 
 class Track {
   private:
@@ -27,6 +31,7 @@ class Track {
     static const float 	TRACK_CONTROLS[][3];
     static const float 	TRAIN_ENERGY;
 	Dragon *dragon;
+	vector<Vertex*> *vertexList;
 
   public:
     // Constructor

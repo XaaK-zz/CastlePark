@@ -40,25 +40,32 @@ Track::~Track(void)
 {
     if ( initialized )
     {
-	glDeleteLists(track_list, 1);
-	//glDeleteLists(train_list, 1);
+		glDeleteLists(track_list, 1);
+		for(std::vector<Vertex*>::iterator it = this->vertexList->begin(); it != this->vertexList->end(); ++it) {
+			delete (*it);
+		}
+		delete vertexList;
     }
 }
 
 
 // Initializer. Would return false if anything could go wrong.
-bool
-Track::Initialize(void)
-{
+bool Track::Initialize(void) {
     CubicBspline    refined(3, true);
     int		    n_refined;
     float	    p[3];
+	float	    prev[3];
     int		    i;
+
+	this->dragon = new Dragon(0.0f,0,0,1.0f,1.0f,1.0f,0);
+	dragon->Initialize();
+
+	vertexList = new vector<Vertex*>();
 
     // Create the track spline.
     track = new CubicBspline(3, true);
     for ( i = 0 ; i < TRACK_NUM_CONTROLS ; i++ )
-	track->Append_Control(TRACK_CONTROLS[i]);
+		track->Append_Control(TRACK_CONTROLS[i]);
 
     // Refine it down to a fixed tolerance. This means that any point on
     // the track that is drawn will be less than 0.1 units from its true
@@ -66,10 +73,67 @@ Track::Initialize(void)
     track->Refine_Tolerance(refined, 0.1f);
     n_refined = refined.N();
 
+	refined.Evaluate_Point(0.0f, prev);
+
+	for ( i = 1 ; i <= n_refined ; i++ ) {
+		refined.Evaluate_Point((float)i, p);
+		float *temp = dragon->computeNormal(p[0],p[1],p[2],prev[0],prev[1],prev[2],p[0],p[1],p[2]+1.0f);
+		Vertex *vert = new Vertex();
+		vert->x = p[0] + temp[0];
+		vert->y = p[1] + temp[1];
+		vert->z = p[2] + temp[2];
+		this->vertexList->push_back(vert);
+		vert = new Vertex();
+		vert->x = p[0] + temp[0];
+		vert->y = p[1] + temp[1];
+		vert->z = p[2] + temp[2]-0.2f;
+		this->vertexList->push_back(vert);
+		vert = new Vertex();
+		vert->x = p[0] + temp[0] * 0.8f;
+		vert->y = p[1] + temp[1] * 0.8f;
+		vert->z = p[2] + temp[2]-0.2f;
+		this->vertexList->push_back(vert);
+		vert = new Vertex();
+		vert->x = p[0] + temp[0] * 0.8f;
+		vert->y = p[1] + temp[1] * 0.8f;
+		vert->z = p[2] + temp[2];
+		this->vertexList->push_back(vert);
+
+		//right side
+		vert = new Vertex();
+		vert->x = p[0] + (-1.0f * temp[0]);
+		vert->y = p[1] + (-1.0f * temp[1]);
+		vert->z = p[2] + temp[2];
+		this->vertexList->push_back(vert);
+		vert = new Vertex();
+		vert->x = p[0] + (-1.0f * temp[0] * 0.8f);
+		vert->y = p[1] + (-1.0f * temp[1] * 0.8f);
+		vert->z = p[2] + temp[2];
+		this->vertexList->push_back(vert);
+		vert = new Vertex();
+		vert->x = p[0] + (-1.0f * temp[0] * 0.8f);
+		vert->y = p[1] + (-1.0f * temp[1] * 0.8f);
+		vert->z = p[2] + temp[2]-0.2f;
+		this->vertexList->push_back(vert);
+		vert = new Vertex();
+		vert->x = p[0] + (-1.0f * temp[0]);
+		vert->y = p[1] + (-1.0f * temp[1]);
+		vert->z = p[2] + temp[2]-0.2f;
+		this->vertexList->push_back(vert);
+		
+		
+
+		delete [] temp;
+
+		prev[0] = p[0];
+		prev[1] = p[1];
+		prev[2] = p[2];
+	}
+
     // Create the display list for the track - just a set of line segments
     // We just use curve evaluated at integer paramer values, because the
     // subdivision has made sure that these are good enough.
-    track_list = glGenLists(1);
+    track_list = glGenLists(2);
     glNewList(track_list, GL_COMPILE);
 	glColor3f(1.0f, 1.0, 1.0f);
 	glBegin(GL_LINE_STRIP);
@@ -81,54 +145,108 @@ Track::Initialize(void)
 	glEnd();
     glEndList();
 
-	this->dragon = new Dragon(0.0f,0,0,1.0f,1.0f,1.0f,0);
-	dragon->Initialize();
-	/*
-    // Set up the train. At this point a cube is drawn. NOTE: The
-    // x-axis will be aligned to point along the track. The origin of the
-    // train is assumed to be at the bottom of the train.
-    train_list = glGenLists(1);
-    glNewList(train_list, GL_COMPILE);
-    glColor3f(1.0, 0.0, 0.0);
-    glBegin(GL_QUADS);
-	glNormal3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(0.5f, 0.5f, 1.0f);
-	glVertex3f(-0.5f, 0.5f, 1.0f);
-	glVertex3f(-0.5f, -0.5f, 1.0f);
-	glVertex3f(0.5f, -0.5f, 1.0f);
+	int quadCount = 0;
+	int startVertex = 0;
+	int size = this->vertexList->size();
+	bool leftSide = true;
 
-	glNormal3f(0.0f, 0.0f, -1.0f);
-	glVertex3f(0.5f, -0.5f, 0.0f);
-	glVertex3f(-0.5f, -0.5f, 0.0f);
-	glVertex3f(-0.5f, 0.5f, 0.0f);
-	glVertex3f(0.5f, 0.5f, 0.0f);
+	glNewList(track_list+1, GL_COMPILE);
+	glBegin(GL_QUADS);
+	for ( i = 0 ; i <= this->vertexList->size()-1; i++ ) {
+		glColor3f(0.54f, 0.54f, 0.47f);
+		glVertex3f(this->vertexList->at(i)->x,
+				   this->vertexList->at(i)->y,
+				   this->vertexList->at(i)->z);
+		quadCount++;
 
-	glNormal3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(0.5f, 0.5f, 0.0f);
-	glVertex3f(0.5f, 0.5f, 1.0f);
-	glVertex3f(0.5f, -0.5f, 1.0f);
-	glVertex3f(0.5f, -0.5f, 0.0f);
+		if(quadCount == 4) {
+			// side 1
+			Vertex *vert1 = this->vertexList->at(startVertex);
+			Vertex *vert2 = this->vertexList->at((startVertex+1) % size);
+			Vertex *vert3 = this->vertexList->at((startVertex+9) % size);
+			Vertex *vert4 = this->vertexList->at((startVertex+8) % size);
 
-	glNormal3f(-1.0f, 0.0f, 0.0f);
-	glVertex3f(-0.5f, 0.5f, 1.0f);
-	glVertex3f(-0.5f, 0.5f, 0.0f);
-	glVertex3f(-0.5f, -0.5f, 0.0f);
-	glVertex3f(-0.5f, -0.5f, 1.0f);
+			glVertex3f(vert1->x,vert1->y,vert1->z);
+			glVertex3f(vert2->x,vert2->y,vert2->z);
+			glVertex3f(vert3->x,vert3->y,vert3->z);
+			glVertex3f(vert4->x,vert4->y,vert4->z);
 
-	glNormal3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.5f, 0.5f, 1.0f);
-	glVertex3f(0.5f, 0.5f, 0.0f);
-	glVertex3f(-0.5f, 0.5f, 0.0f);
-	glVertex3f(-0.5f, 0.5f, 1.0f);
+			/////////////////////////////////
+			if(leftSide) {
+				float xDiff = vert4->x - vert1->x;
+				float yDiff = vert4->y - vert1->y;
+				float zDiff = vert4->z - vert1->z;
+				float xDiffRight = this->vertexList->at((startVertex+12) % size)->x -  this->vertexList->at(startVertex+4)->x;
+				float yDiffRight = this->vertexList->at((startVertex+12) % size)->y -  this->vertexList->at(startVertex+4)->y;
+				float zDiffRight = this->vertexList->at((startVertex+12) % size)->z -  this->vertexList->at(startVertex+4)->z;
 
-	glNormal3f(0.0f, -1.0f, 0.0f);
-	glVertex3f(0.5f, -0.5f, 0.0f);
-	glVertex3f(0.5f, -0.5f, 1.0f);
-	glVertex3f(-0.5f, -0.5f, 1.0f);
-	glVertex3f(-0.5f, -0.5f, 0.0f);
-    glEnd();
+				glColor3f(0.54f, 0.27f, 0.07f);
+				glVertex3f(vert1->x,vert1->y,vert1->z);
+				glVertex3f(this->vertexList->at(startVertex+4)->x,this->vertexList->at(startVertex+4)->y,this->vertexList->at(startVertex+4)->z);
+				glVertex3f(this->vertexList->at(startVertex+4)->x + (xDiffRight * 0.2f),
+						   this->vertexList->at(startVertex+4)->y + (yDiffRight * 0.2f),
+						   this->vertexList->at(startVertex+4)->z + (zDiffRight * 0.2f));
+				glVertex3f(vert1->x + (xDiff * 0.2f),
+					       vert1->y + (yDiff * 0.2f),
+						   vert1->z + (zDiff * 0.2f));
+
+				glVertex3f(vert1->x,vert1->y,vert1->z);
+				glVertex3f(vert1->x + (xDiff * 0.2f),
+					       vert1->y + (yDiff * 0.2f),
+						   vert1->z + (zDiff * 0.2f));
+				glVertex3f(this->vertexList->at(startVertex+4)->x + (xDiffRight * 0.2f),
+						   this->vertexList->at(startVertex+4)->y + (yDiffRight * 0.2f),
+						   this->vertexList->at(startVertex+4)->z + (zDiffRight * 0.2f));
+				glVertex3f(this->vertexList->at(startVertex+4)->x,this->vertexList->at(startVertex+4)->y,this->vertexList->at(startVertex+4)->z);
+				
+				
+			}
+
+			/////////////////////////////////////
+			glColor3f(0.54f, 0.54f, 0.47f);
+		
+			//side 2
+			vert1 = this->vertexList->at((startVertex+1) % size);
+			vert2 = this->vertexList->at((startVertex+2) % size);
+			vert3 = this->vertexList->at((startVertex+10) % size);
+			vert4 = this->vertexList->at((startVertex+9) % size);
+
+			glVertex3f(vert1->x,vert1->y,vert1->z);
+			glVertex3f(vert2->x,vert2->y,vert2->z);
+			glVertex3f(vert3->x,vert3->y,vert3->z);
+			glVertex3f(vert4->x,vert4->y,vert4->z);
+
+			//side 3
+			vert1 = this->vertexList->at((startVertex+2) % size);
+			vert2 = this->vertexList->at((startVertex+3) % size);
+			vert3 = this->vertexList->at((startVertex+11) % size);
+			vert4 = this->vertexList->at((startVertex+10) % size);
+
+			glVertex3f(vert1->x,vert1->y,vert1->z);
+			glVertex3f(vert2->x,vert2->y,vert2->z);
+			glVertex3f(vert3->x,vert3->y,vert3->z);
+			glVertex3f(vert4->x,vert4->y,vert4->z);
+
+			//side 4
+			vert1 = this->vertexList->at((startVertex+3) % size);
+			vert2 = this->vertexList->at((startVertex) % size);
+			vert3 = this->vertexList->at((startVertex+8) % size);
+			vert4 = this->vertexList->at((startVertex+11) % size);
+
+			glVertex3f(vert1->x,vert1->y,vert1->z);
+			glVertex3f(vert2->x,vert2->y,vert2->z);
+			glVertex3f(vert3->x,vert3->y,vert3->z);
+			glVertex3f(vert4->x,vert4->y,vert4->z);
+
+			leftSide = !leftSide;
+			quadCount = 0;
+			startVertex = i+1;
+		}
+
+	}
+	glEnd();
     glEndList();
-	*/
+
     initialized = true;
 
     return true;
@@ -150,6 +268,7 @@ Track::Draw(void)
 
     // Draw the track
     glCallList(track_list);
+    glCallList(track_list+1);
 
     glPushMatrix();
 
